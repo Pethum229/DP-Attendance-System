@@ -1,14 +1,5 @@
-<?php session_start(); ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<?php include "inc_header.php"; ?>
     <title>DP Attendance System</title>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/3.3.3/adapter.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.10/vue.min.js"></script>
-    <script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> -->
     <style>
         *{
             margin:0;
@@ -65,8 +56,9 @@
                     <label>SCAN QR CODE</label>
                     <input type="text" name="text" id="text" readonly="" placeholder="Scan QR Code" class="form-control">
                 </form>
+                
                 <div>
-                    <h2>Student Detials</h2>
+                    <h2>Student Details</h2>
                 </div>
                 <div>
                     <ol>
@@ -74,7 +66,10 @@
                         <li>Student Name : </li>
                         <li>Address : </li>
                         <li>Contact Number : </li>
+                        <li>Whatsapp Number : </li>
                         <li>Birthday : </li>
+                        <li>Email : </li>
+                        <li>Projects Completed : </li>
                     </ol>
                 </div>
                 <div>
@@ -118,9 +113,9 @@
         document.forms[0].submit();
             
         // Optionally, you can restart the scanner after some time if needed
-        setTimeout(function() {
-            scanner.start();
-        }, 3000);  // Adjust the delay as needed (e.g., 3000 milliseconds)
+        //setTimeout(function() {
+        //    scanner.start();
+        //}, 3000);  // Adjust the delay as needed (e.g., 3000 milliseconds)
     });
 
         // Read the QR Code <---End--->
