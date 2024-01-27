@@ -27,7 +27,7 @@ try{
                                                                                                 $_POST['cName']));
 
     // Get the last inserted StudentID
-    $stmt_last_student_id = $db->query("SELECT StudentID FROM students ORDER BY StudentID DESC LIMIT 1");
+    $stmt_last_student_id = $db->query("SELECT StudentID FROM students ORDER BY Id DESC LIMIT 1");
     $lastStudentID = $stmt_last_student_id->fetch(PDO::FETCH_ASSOC)['StudentID'];
 
     //Insert data into time_tables table
