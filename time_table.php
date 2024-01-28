@@ -12,13 +12,13 @@
                 echo "<h2>$currentDayName 5.30 AM - 7.30 AM Students List ($currentDate)</h2>";
             ?>
             <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <td>Student ID</td>
-                            <td>Student Name</td>
-                        </tr>
-                    </thead>
-                    <tbody>
+                <thead>
+                    <tr>
+                        <td>Student ID</td>
+                        <td>Student Name</td>
+                    </tr>
+                </thead>
+                <tbody>
                         <?php
                             include "db_connection.php";
 
@@ -35,8 +35,8 @@
                         <?php
                         }
                         ?>
-                    </tbody>
-                </table>
+                </tbody>
+            </table>
                 <!-- Structre of Time Table <-End-> -->
         </div>
     </section>
