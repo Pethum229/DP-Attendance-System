@@ -40,9 +40,31 @@ $timeTable08 = $day.'8';
 try{
     include_once "../db_connection.php";
 
+    // Update not attended students AttendanceStatus of students table
+    $updateNASStatus = $db->prepare("SELECT * FROM `daily_time_tables`");
+    $updateNASStatus -> execute();
+    $dailyTimeTableRecords = $updateNASStatus->fetchAll(PDO::FETCH_ASSOC);
+
+    $updateAttendanceStatus = $db->prepare("UPDATE `students` SET `AttendanceStatus`=
+                                                    CASE
+                                                        WHEN LENGTH(`AttendanceStatus`)=5 THEN CONCAT(SUBSTRING(`AttendanceStatus`,2), 0)
+                                                        ELSE CONCAT(`AttendanceStatus`,0)
+                                                    END
+                                                WHERE `StudentID`= :studentID");
+
+    foreach ($dailyTimeTableRecords as $record){
+        $studentID = $record['StudentID'];
+        $updateAttendanceStatus->bindParam(':studentID', $studentID, PDO::PARAM_STR);
+        $updateAttendanceStatus->execute();
+    }
+
+    echo "Not attended students status updated successfully";
+;
     // Delete all rows of daily_time_table
     $deleteAllRows = $db->prepare("DELETE FROM `daily_time_tables`");
     $deleteAllRows -> execute();
+
+    echo "All records deleted successfully<br>";
 
     // Insert selected data from time_tables table to daily_time_table
     $timeTable = $db->prepare("INSERT INTO `daily_time_tables` (`StudentID`,`DateNTime`)
@@ -75,7 +97,7 @@ try{
     // Insert 08 time slot data to daily_time_table
     $timeTable -> execute(array($timeTable08,'1'));
 
-    echo "Daily time table was created successfully";
+    echo "Daily time table was created successfully<br>";
 
     //Update count of time_tables
     $countUpdate = $db->prepare("UPDATE `time_tables` tt JOIN `daily_time_tables` dt
@@ -83,7 +105,7 @@ try{
                                                                     SET tt.`Count` = tt.`Count`+1");
     $countUpdate -> execute();
 
-    echo "Time table count updated successfully";
+    echo "Time table count updated successfully<br>";
 
 } catch (Exception $e) {
     echo "Error: " . $e->getMessage();

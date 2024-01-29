@@ -33,12 +33,11 @@
             <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <td>ID</td>
                             <td>Student ID</td>
+                            <td>Student Name</td>
                             <td>Time In</td>
                             <td>Time Out</td>
                             <td>Log Date</td>
-                            <td>Status</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -48,18 +47,19 @@
                             $date = date('Y-m-d');
 
                             // $sql = "SELECT ID,StudentID,TimeIn FROM daily_users";
-                            $sql = $db->prepare("SELECT `ID`,`StudentID`,`TimeIn`,`TimeOut`,`LogDate`,`Status` FROM `daily_users` WHERE `LogDate`=?");
+                            $sql = $db->prepare("SELECT du.`StudentID`, du.`TimeIn`, du.`TimeOut`, du.`LogDate`, s.`StudentName` FROM `daily_users` du
+                                                    JOIN students s ON du.StudentID = s.StudentID
+                                                        WHERE `LogDate`=?");
                             $sql->execute(array($date));
                             while ($row = $sql -> fetch (PDO::FETCH_ASSOC)){      
                         ?>
                             <tr>
-                                <td><?php echo $row['ID'] ?></td>
                                 <td><?php echo $row['StudentID'] ?></td>
+                                <td><?php echo $row['StudentName'] ?></td>
 
                                 <td><?php echo $row['TimeIn'] ?></td>
                                 <td><?php echo $row['TimeOut'] ?></td>
                                 <td><?php echo $row['LogDate'] ?></td>
-                                <td><?php echo $row['Status'] ?></td>
                             </tr>
                         <?php
                         }

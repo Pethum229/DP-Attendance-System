@@ -15,8 +15,9 @@ try{
                                                 `Birthday`,
                                                 `Email`,
                                                 `ProjectsCompleted`,
-                                                `CampusId`)
-                                                    VALUES (?,?,?,?,?,?,?,?,?)")->execute(array($_POST['sId'],
+                                                `CampusId`,
+                                                `AttendanceStatus`)
+                                                    VALUES (?,?,?,?,?,?,?,?,?,?)")->execute(array($_POST['sId'],
                                                                                                 $_POST['sName'],
                                                                                                 $_POST['address'],
                                                                                                 $_POST['pNumber'],
@@ -24,7 +25,8 @@ try{
                                                                                                 $_POST['birthday'],
                                                                                                 $_POST['email'],
                                                                                                 $_POST['cProjects'],
-                                                                                                $_POST['cName']));
+                                                                                                $_POST['cName'],
+                                                                                                '1'));
 
     // Get the last inserted StudentID
     $stmt_last_student_id = $db->query("SELECT StudentID FROM students ORDER BY Id DESC LIMIT 1");

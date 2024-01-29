@@ -32,9 +32,12 @@
                 <video id="preview"></video>
                 <button id="startScanButton" class="btn btn-primary">Start Scan</button>
                 <?php
+                    // unset($_SESSION['success']);
+                    // unset($_SESSION['error']);
+
                     if(isset($_SESSION['error'])){
                         echo"
-                            <div class='alert alert-danger'>
+                            <div id='error' class='alert alert-danger'>
                                 <h4>Error!</h4>
                                 ".$_SESSION['error']."
                             </div>
@@ -43,7 +46,7 @@
 
                     if(isset($_SESSION['success'])){
                         echo"
-                            <div class='alert alert-success' style='background:green; color:white;'>
+                            <div id='success' class='alert alert-success' style='background:green; color:white;'>
                                 <h4>Success!</h4>
                                 ".$_SESSION['success']."
                             </div>
@@ -57,19 +60,38 @@
                     <input type="text" name="text" id="text" readonly="" placeholder="Scan QR Code" class="form-control">
                 </form>
                 
+                <?php
+
+                include_once "db_connection.php";
+
+                if(isset($_SESSION['QR'])){
+
+                    $sDetails = $db->prepare("SELECT `StudentID`,
+                                                    `StudentName`,
+                                                    `Address`,
+                                                    `PhoneNumber`,
+                                                    `WhatsappNumber`,
+                                                    `Birthday`,
+                                                    `Email`,
+                                                    `ProjectsCompleted` FROM `students` WHERE `StudentID`=?");
+                    $sDetails->execute(array($_SESSION['QR']));
+                    while ($row = $sDetails -> fetch (PDO::FETCH_ASSOC)){
+                
+                ?>
+
                 <div>
                     <h2>Student Details</h2>
                 </div>
                 <div>
                     <ol>
-                        <li>Student ID : </li>
-                        <li>Student Name : </li>
-                        <li>Address : </li>
-                        <li>Contact Number : </li>
-                        <li>Whatsapp Number : </li>
-                        <li>Birthday : </li>
-                        <li>Email : </li>
-                        <li>Projects Completed : </li>
+                        <li>Student ID : <?php echo $row['StudentID'] ?></li>
+                        <li>Student Name : <?php echo $row['StudentName'] ?></li>
+                        <li>Address : <?php echo $row['Address'] ?></li>
+                        <li>Contact Number : <?php echo $row['PhoneNumber'] ?></li>
+                        <li>Whatsapp Number : <?php echo $row['WhatsappNumber'] ?></li>
+                        <li>Birthday : <?php echo $row['Birthday'] ?></li>
+                        <li>Email : <?php echo $row['Email'] ?></li>
+                        <li>Projects Completed : <?php echo $row['ProjectsCompleted'] ?></li>
                     </ol>
                 </div>
                 <div>
@@ -77,6 +99,11 @@
                         Happy Learning!
                     </h3>
                 </div>
+
+                <?php
+                }};
+                ?>
+
             </div>
         </div>
     </section>
@@ -112,13 +139,24 @@
         // Submit the form
         document.forms[0].submit();
             
-        // Optionally, you can restart the scanner after some time if needed
-        //setTimeout(function() {
-        //    scanner.start();
-        //}, 3000);  // Adjust the delay as needed (e.g., 3000 milliseconds)
     });
 
         // Read the QR Code <---End--->
+
+        setTimeout(function(){
+
+            <?php
+            if(isset($_SESSION['error'])){
+                unset($_SESSION['error']);
+            }
+
+            if(isset($_SESSION['success'])){
+                unset($_SESSION['success']);
+            }
+            ?>
+            
+        },4000);
+
     </script>
 </body>
 </html>
