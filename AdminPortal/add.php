@@ -3,49 +3,58 @@ include "../inc_header.php";
 $msg="";
 
 // Add Student Register Details to Database
-try{
-    include "../db_connection.php";
+if (isset($_POST['submit'])){   
+    try{
+        include "../db_connection.php";
+    
+        // Insert date into students table
+        $stmtStudents = $db->prepare("INSERT INTO `students` (`StudentID`,
+                                                    `StudentName`,
+                                                    `Address`,
+                                                    `PhoneNumber`,
+                                                    `WhatsappNumber`,
+                                                    `Birthday`,
+                                                    `Email`,
+                                                    `ProjectsCompleted`,
+                                                    `CampusId`,
+                                                    `AttendanceStatus`)
+                                                        VALUES (?,?,?,?,?,?,?,?,?,?)")->execute(array($_POST['sId'],
+                                                                                                    $_POST['sName'],
+                                                                                                    $_POST['address'],
+                                                                                                    $_POST['pNumber'],
+                                                                                                    $_POST['wNumber'],
+                                                                                                    $_POST['birthday'],
+                                                                                                    $_POST['email'],
+                                                                                                    $_POST['cProjects'],
+                                                                                                    $_POST['cName'],
+                                                                                                    '1'));
+    
+        // Get the last inserted StudentID
+        $stmt_last_student_id = $db->query("SELECT StudentID FROM students ORDER BY Id DESC LIMIT 1");
+        $lastStudentID = $stmt_last_student_id->fetch(PDO::FETCH_ASSOC)['StudentID'];
+    
+        //Insert data into time_tables table
+        $stmt_time_tables = $db->prepare("INSERT INTO `time_tables` (`StudentID`, `DateAndTime`,`Count`)VALUES (?,?,?)");
+    
+        //Insert date for date and time 01
+        $stmt_time_tables -> execute(array($lastStudentID,$_POST['date01']. '' . $_POST['time01'],1));
+        //Insert date for date and time 02
+        $stmt_time_tables -> execute(array($lastStudentID,$_POST['date02']. '' . $_POST['time02'],1));
+        //Insert date for date and time 03
+        $stmt_time_tables -> execute(array($lastStudentID,$_POST['date03']. '' . $_POST['time03'],1));
+    
+        echo "Date added successfully!";
+    
+    }catch(PDOException $e){
+        $msg.=$e->getMessage();
+    }
 
-    // Insert date into students table
-    $stmtStudents = $db->prepare("INSERT INTO `students` (`StudentID`,
-                                                `StudentName`,
-                                                `Address`,
-                                                `PhoneNumber`,
-                                                `WhatsappNumber`,
-                                                `Birthday`,
-                                                `Email`,
-                                                `ProjectsCompleted`,
-                                                `CampusId`,
-                                                `AttendanceStatus`)
-                                                    VALUES (?,?,?,?,?,?,?,?,?,?)")->execute(array($_POST['sId'],
-                                                                                                $_POST['sName'],
-                                                                                                $_POST['address'],
-                                                                                                $_POST['pNumber'],
-                                                                                                $_POST['wNumber'],
-                                                                                                $_POST['birthday'],
-                                                                                                $_POST['email'],
-                                                                                                $_POST['cProjects'],
-                                                                                                $_POST['cName'],
-                                                                                                '1'));
+    $QRID = $_POST['sId'];
 
-    // Get the last inserted StudentID
-    $stmt_last_student_id = $db->query("SELECT StudentID FROM students ORDER BY Id DESC LIMIT 1");
-    $lastStudentID = $stmt_last_student_id->fetch(PDO::FETCH_ASSOC)['StudentID'];
-
-    //Insert data into time_tables table
-    $stmt_time_tables = $db->prepare("INSERT INTO `time_tables` (`StudentID`, `DateAndTime`,`Count`)VALUES (?,?,?)");
-
-    //Insert date for date and time 01
-    $stmt_time_tables -> execute(array($lastStudentID,$_POST['date01']. '' . $_POST['time01'],1));
-    //Insert date for date and time 02
-    $stmt_time_tables -> execute(array($lastStudentID,$_POST['date02']. '' . $_POST['time02'],1));
-    //Insert date for date and time 03
-    $stmt_time_tables -> execute(array($lastStudentID,$_POST['date03']. '' . $_POST['time03'],1));
-
-    echo "Date added successfully!";
-
-}catch(PDOException $e){
-    $msg.=$e->getMessage();
+    // Check $_POST values
+    // echo "<pre>";
+    // var_dump($_POST);
+    // echo "</pre>";
 }
 ?>
     <title>Add Student</title>
@@ -168,8 +177,35 @@ try{
 
     </form>
 
+    <?php
+
+    // Genrate QR Code using StudentID
+
+    include "../phpqrcode/qrlib.php";
+    $PNG_TEMP_DIR = 'temp/';
+
+    if (!file_exists($PNG_TEMP_DIR))
+        mkdir($PNG_TEMP_DIR);
+
+    $filename = $PNG_TEMP_DIR . $QRID.'.png';
+
+    if(isset($_POST['submit'])){
+        $codeString = $_POST['sId'];
+
+        $filename = $PNG_TEMP_DIR . $QRID .
+        md5($codeString).'.png';
+
+        QRcode::png($codeString,$filename);
+
+        echo '<div id="qrRemove"><img src="' . $PNG_TEMP_DIR .
+        basename($filename) . '"/><hr/></div>';
+    }
+
+    ?>
+
 
     <script>
+        // Show time when select date
         function showTimeSelection1() {
             var selectDate1 = document.getElementById("selectDate1");
             var timeSelection1 = document.getElementById("timeSelection1");
@@ -205,6 +241,17 @@ try{
                 timeSelection3.style.display = "none";
             }
         }
+
+        // Remove QR after 5 seconds
+        document.addEventListener('DOMContentLoaded',function(){
+            var qrRemove = document.getElementById('qrRemove');
+
+            if(qrRemove){
+                setTimeout(function(){
+                    qrRemove.remove();
+                }, 5000);
+            }
+        })
     </script>
 
 </body>

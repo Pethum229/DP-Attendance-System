@@ -9,7 +9,7 @@
     <button><a href="setting.php">Settings</a></button>
     <button><a href="check.php">Check Students</a></button>
     <button><a href="timetable.php">Make Time Table</a></button>
-    <button><a href="logout.php">Log Out</a></button>
+    <button><a href="../logout.php">Log Out</a></button>
 
 </body>
 </html>

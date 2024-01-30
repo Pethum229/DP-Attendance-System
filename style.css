@@ -1,0 +1,81 @@
+/* Import Fonts <--Start--> */
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Actor&display=swap');
+
+/* Import Fonts <--Start--> */
+
+:root{
+    /* Fonts */
+    --roboto:'Roboto', sans-serif;
+    --actor:'Actor', sans-serif;
+
+    /* Colors */
+    --backgorund:#222222;
+    --glassy:#0d1117;
+    --popup:rgba(13, 17, 23, 0.9);
+    --text:#c9d1d9;
+    --white:#ffffff;
+    --accent:#00c7c7;
+    --button:linear-gradient(to right, #00c7c7, #00555f);
+    --link:#00c7c7;
+    --border:#4b5563;
+    --input:#2d3748;
+    --placeholder:#9CA3AF;
+    --success:#34d399;
+    --error:#EF4444;
+}
+
+
+/* Common Styles <--Start-->*/
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    background: var(--backgorund);
+}
+.wrapper{
+    margin: 0 auto;
+    width: 1200px;
+}
+
+/* Common Styles <--End-->*/
+
+/* ReadMe */
+
+/*Background Color:
+Dark Gray Background: #222222
+
+Content Card or Container:
+Dark Blue or Black Glass Container: #0d1117
+Adjust opacity for a glass effect: rgba(13, 17, 23, 0.9)
+
+Text Color:
+Light Gray Text: #c9d1d9
+White Text for Highlights: #ffffff
+
+Accent Color:
+Teal Accent Color: #00c7c7
+
+Button Color:
+Gradient Button with Teal and Blue: linear-gradient(to right, #00c7c7, #00555f)
+
+Link Color:
+Teal Link Color: #00c7c7
+
+Hover Effects:
+Slight Glow or Shadow on Hover: Adjust opacity or box-shadow
+
+Border Color:
+Light Border: #4b5563
+
+Input Fields:
+Dark Gray Input Fields: #2d3748
+Light Gray Placeholder Text: #9CA3AF
+
+Success/Error Messages:
+Green for Success: #34d399
+Red for Error: #EF4444*/

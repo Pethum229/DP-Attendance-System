@@ -1,14 +1,6 @@
 <?php include "inc_header.php"; ?>
     <title>DP Attendance System</title>
     <style>
-        *{
-            margin:0;
-            padding:0;
-        }
-        .container{
-            width:1200px;
-            margin:0 auto;
-        }
         .row{
             display:flex;
         }
@@ -26,7 +18,29 @@
 <body>
     <!-- Structure of Camera Preview and Input Boxes <-Start-> -->
 
-    <section class="container">
+    <section class="wrapper">
+        <div>
+            <h1>Student Attendance System</h1>
+        </div>
+        <div class="time">
+            <div class="timeContent">
+                <h2>Scan Your QR Code</h2>
+
+                <?php
+
+                    date_default_timezone_set('Asia/Kolkata');
+
+                    $currentDate = date('Y-m-d');
+                    $currentDay = date('l');
+
+                    echo "$currentDay".','."$currentDate <br>";
+
+                ?>
+
+                <div id="current-time"></div>
+
+            </div>
+        </div>
         <div class="row">
             <div class="scanner">
                 <video id="preview"></video>
@@ -56,8 +70,7 @@
             </div>
             <div class="student">
                 <form action="insert1.php" method="POST" class="form-horizontal">
-                    <label>SCAN QR CODE</label>
-                    <input type="text" name="text" id="text" readonly="" placeholder="Scan QR Code" class="form-control">
+                    <input type="text" name="text" id="text" readonly="" placeholder="Scan QR Code" class="form-control" style="display:none">
                 </form>
                 
                 <?php
@@ -143,6 +156,9 @@
 
         // Read the QR Code <---End--->
 
+
+        // Set Timeout for massages <---Start--->
+
         setTimeout(function(){
 
             <?php
@@ -156,6 +172,38 @@
             ?>
             
         },4000);
+
+        // Set Timeout for massages <---End--->
+
+
+        // Update time every second <---Start--->
+
+        function getCurrentTime() {
+            // Make an AJAX request to get_current_time.php using fetch
+            fetch('get_current_time.php')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Network response was not ok: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    // Update the content of the "current-time" div with the response
+                    document.getElementById("current-time").innerHTML = data;
+                })
+                .catch(error => {
+                    console.error('Error during fetch operation:', error);
+                });
+        }
+
+        // Call getCurrentTime initially to display the current time
+        getCurrentTime();
+
+        // Update the time every second
+        setInterval(getCurrentTime, 1000);
+
+
+        // Update time every second <---End--->
 
     </script>
 </body>
