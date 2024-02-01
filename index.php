@@ -20,6 +20,7 @@
             border-radius:5px;
             padding:10px 0;
             width:800px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         }
         .scanner{
             width:100%;
@@ -28,6 +29,7 @@
             width:100%;
             display:flex;
             justify-content:center;
+            margin-top:20px;
         }
         .heading{
             font:var(--roboto);
@@ -60,6 +62,31 @@
         .detailList{
             display:flex;
             justify-content:center;
+            margin:15px 0 5px 0;
+        }
+        .wMsg{
+            text-align:center;
+            font-family:var(--roboto);
+            color:var(--success);
+        }
+        .scanDetails{
+            background:var(--glassy);
+            padding:20px;
+            border-radius:10px;
+            border:2px solid red;
+            animation: borderAnimation 5s infinite;
+        }
+        .titleSD{
+            color:var(--white);
+            font-family:var(--roboto);
+            font-size:30px;
+        }
+        .details>li{
+            color:var(--text);
+        }
+        .btn-scan>img{
+            width:25px;
+            height:25px;
         }
         /* .btn-scan{
             color:var(--white);
@@ -133,6 +160,129 @@
             50% { background-position: 400% 0; }
             100% { background-position: 0 0; }
         }
+
+        @keyframes borderAnimation {
+            0% {
+                border-color: red;
+            }
+            25% {
+                border-color: blue;
+            }
+            50% {
+                border-color: green;
+            }
+            75% {
+                border-color: yellow;
+            }
+            100% {
+                border-color: red;
+            }
+        }
+
+        /* Check Start */
+
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+        body{
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #1C1D22;
+        }
+        button{
+            padding: 10px;
+        }
+        .notifications{
+            position: fixed;
+            top: 30px;
+            right: 20px;
+        }
+        .toast{
+            position: relative;
+            padding: 10px;
+            color: #fff;
+            margin-bottom: 10px;
+            width: 400px;
+            display: grid;
+            grid-template-columns: 70px 1fr 70px;
+            border-radius: 5px;
+            --color: #0abf30;
+            background-image: 
+                linear-gradient(
+                    to right, #0abf3055, #22242f 30%
+                ); 
+            animation: show 0.3s ease 1 forwards  
+        }
+        .toast i{
+            color: var(--color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: x-large;
+        }
+        .toast .title{
+            font-size: x-large;
+            font-weight: bold;
+        }
+        .toast span, .toast i:nth-child(3){
+            color: #fff;
+            opacity: 0.6;
+        }
+        @keyframes show{
+            0%{
+                transform: translateX(100%);
+            }
+            40%{
+                transform: translateX(-5%);
+            }
+            80%{
+                transform: translateX(0%);
+            }
+            100%{
+                transform: translateX(-10%);
+            }
+        }
+        .toast::before{
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            background-color: var(--color);
+            width: 100%;
+            height: 3px;
+            content: '';
+            box-shadow: 0 0 10px var(--color);
+            animation: timeOut 5s linear 1 forwards
+        }
+        @keyframes timeOut{
+            to{
+                width: 0;
+            }
+        }
+        .toast.error{
+            --color: #f24d4c;
+            background-image: 
+                linear-gradient(
+                    to right, #f24d4c55, #22242F 30%
+                );
+        }
+        .toast.warning{
+            --color: #e9bd0c;
+            background-image: 
+                linear-gradient(
+                    to right, #e9bd0c55, #22242F 30%
+                );
+        }
+        .toast.info{
+            --color: #3498db;
+            background-image: 
+                linear-gradient(
+                    to right, #3498db55, #22242F 30%
+                );
+        }
+
+        /* Check End */
     </style>
 </head>
 <body>
@@ -162,32 +312,9 @@
             </div>
         </div>
         <div class="w-100">
-            <button id="startScanButton" class="btn-scan">Hover Me! Then click me to Start Scan <img src="images/icons8-qr-code-ezgif.com-gif-maker.gif"></button>
+            <button id="startScanButton" class="btn-scan">Hover Me! Then click me to Start Scan <img src="images/icons8-qr-code.gif"></button>
         </div>
-        <div class="scanner">
-            <video id="preview"></video>
-            <?php
-                // unset($_SESSION['success']);
-                // unset($_SESSION['error']);
-                if(isset($_SESSION['error'])){
-                    echo"
-                        <div id='error' class='alert alert-danger'>
-                            <h4>Error!</h4>
-                            ".$_SESSION['error']."
-                        </div>
-                    ";
-                }
-                if(isset($_SESSION['success'])){
-                    echo"
-                        <div id='success' class='alert alert-success' style='background:green; color:white;'>
-                            <h4>Success!</h4>
-                            ".$_SESSION['success']."
-                        </div>
-                    ";
-                }
-            ?>
-        </div>
-        <div class="student">
+        <div class="student" id="student">
             <div class="sDetails">
                 <form action="insert1.php" method="POST" class="form-horizontal">
                     <input type="text" name="text" id="text" readonly="" placeholder="Scan QR Code" class="form-control" style="display:none">
@@ -208,32 +335,70 @@
                     while ($row = $sDetails -> fetch (PDO::FETCH_ASSOC)){
                     
                 ?>
-                <div>
-                    <h2>Last Scanned Student Details</h2>
-                </div>
-                <div class="detailList">
-                    <ol>
-                        <li>Student ID : <?php echo $row['StudentID'] ?></li>
-                        <li>Student Name : <?php echo $row['StudentName'] ?></li>
-                        <li>Address : <?php echo $row['Address'] ?></li>
-                        <li>Contact Number : <?php echo $row['PhoneNumber'] ?></li>
-                        <li>Whatsapp Number : <?php echo $row['WhatsappNumber'] ?></li>
-                        <li>Birthday : <?php echo $row['Birthday'] ?></li>
-                        <li>Email : <?php echo $row['Email'] ?></li>
-                        <li>Projects Completed : <?php echo $row['ProjectsCompleted'] ?></li>
-                    </ol>
-                </div>
-                <div>
-                    <h3>
-                        Happy Learning!
-                    </h3>
+                <div class="scanDetails">
+                    <div>
+                        <h2 class="titleSD">Last Scanned Student Details</h2>
+                    </div>
+                    <div class="detailList">
+                        <ol class="details">
+                            <li>Student ID : <?php echo $row['StudentID'] ?></li>
+                            <li>Student Name : <?php echo $row['StudentName'] ?></li>
+                            <li>Address : <?php echo $row['Address'] ?></li>
+                            <li>Contact Number : <?php echo $row['PhoneNumber'] ?></li>
+                            <li>Whatsapp Number : <?php echo $row['WhatsappNumber'] ?></li>
+                            <li>Birthday : <?php echo $row['Birthday'] ?></li>
+                            <li>Email : <?php echo $row['Email'] ?></li>
+                            <li>Projects Completed : <?php echo $row['ProjectsCompleted'] ?></li>
+                        </ol>
+                    </div>
+                    <div>
+                        <h3 class="wMsg">
+                            Happy Learning!
+                        </h3>
+                    </div>
                 </div>
                 <?php
                 }};
                 ?>
             </div>
         </div>
+        <div class="scanner">
+            <?php
+                // unset($_SESSION['success']);
+                // unset($_SESSION['error']);
+                if(isset($_SESSION['error'])){
+                    echo"
+                        <div id='error' class='alert alert-danger'>
+                            <h4>Error!</h4>
+                            ".$_SESSION['error']."
+                        </div>
+                    ";
+                }
+                if(isset($_SESSION['success'])){
+                    echo"
+                        <div id='success' class='alert alert-success' style='background:green; color:white;'>
+                            <h4>Success!</h4>
+                            ".$_SESSION['success']."
+                        </div>
+                    ";
+                }
+            ?>
+            <video id="preview"></video>
+        </div>
     </section>
+
+
+    <!-- Check <-Start-> -->
+
+    <div class="notifications"></div>
+    <div class="buttons">
+        <!-- <button id="success">Success</button> -->
+        <button id="error">Error</button>
+        <button id="warning">Warning</button>
+        <button id="info">Info</button>
+    </div>
+
+    <!-- Check <-End-> -->
 
     <!-- Structure of Camera Preview and Input Boxes <-End-> -->
 
@@ -243,9 +408,12 @@
 
         // Get the button element
         let startScanButton = document.getElementById('startScanButton');
+        // Get the student details div
+        let studentDetails = document.getElementById('student');
         // Add an event listener to the button
         startScanButton.addEventListener('click', function() {
             startScanButton.style.display = 'none';
+            studentDetails.style.display = 'none';
             Instascan.Camera.getCameras().then(function(cameras){
                 if(cameras.length > 0){
                     scanner.start(cameras[0]);
@@ -261,6 +429,7 @@
         // Stop the scanner after a QR code is scanned
         scanner.stop();
         startScanButton.style.display = 'inline-block';
+        studentDetails.style.display = 'block';
             
         // Set the scanned content to the input field
         document.getElementById('text').value = content;
@@ -322,5 +491,8 @@
         // Update time every second <---End--->
 
     </script>
+
+    <script src="app.js"></script>
+
 </body>
 </html>
