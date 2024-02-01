@@ -19,7 +19,7 @@
         if($sql->rowCount()>0){
             $sql = $db->prepare("UPDATE `daily_users` SET `TimeOut`=?, `Status`=? WHERE `StudentID`=? AND `LogDate`=?");
             $sql-> execute(array($time,'1',$text,$date));
-            $_SESSION['success'] = 'Successfully Time Out';
+            $_SESSION['timeOut'] = 'Successfully Time Out';
         }else{
             // Check scanned student IsActive
             $isActive = $db->prepare("SELECT * FROM `students` WHERE `StudentID`=? AND `IsActive`=?");
@@ -31,7 +31,7 @@
                 $sql = $db->prepare("INSERT INTO `daily_users`(`StudentID`,`TimeIn`,`LogDate`,`Status`) VALUES(?,?,?,?)");
                 $sql->execute(array($text,$time,$date,'0'));
                 if($sql->rowCount()>0){
-                    $_SESSION['success'] = 'Successfully Time In';
+                    $_SESSION['timeIn'] = 'Successfully Time In';
                 }else{
                     $_SESSION['error'] = $db->error;
                 }
@@ -50,7 +50,7 @@
                 $deleteDetails -> execute(array($text));
 
             }else{
-                $_SESSION['error'] = "You are not attended 5 days in a row. Please Contact admin to reregister";
+                $_SESSION['warning'] = "You are not attended 5 days in a row. Please Contact admin to reregister";
             }
 
         }
@@ -58,7 +58,7 @@
         unset($_POST['text']);
 
     }else{
-        $_SESSION['error'] = 'Please Scan Your QR Code Number';
+        $_SESSION['qrNotSet'] = 'Please Scan Your QR Code Number';
     }
 
     header("location: index.php");

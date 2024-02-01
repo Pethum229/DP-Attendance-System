@@ -10,18 +10,19 @@
     $array = array();
 
     $file = fopen($filename,"w");
-    $array = array("ID","Student ID","Time In","Time Out","Log Date","Status");
+    $array = array("ID","Student ID","Completed Projects (Today)","Time In","Time Out","Log Date","Status");
     fputcsv($file,$array);
 
     foreach($result as $row){
         $ID = $row['ID'];
         $StudentID = $row['StudentID'];
+        $CompletedProjects = $row['CompletedProjects'];
         $TimeIn = $row['TimeIn'];
         $TimeOut = $row['TimeOut'];
         $LogDate = $row['LogDate'];
         $Status = $row['Status'];
 
-        $array = array($ID,$StudentID,$TimeIn,$TimeOut,$LogDate,$Status);
+        $array = array($ID,$StudentID,$CompletedProjects,$TimeIn,$TimeOut,$LogDate,$Status);
         fputcsv($file,$array);
     }
     fclose($file);

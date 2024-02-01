@@ -24,6 +24,9 @@
         }
         .scanner{
             width:100%;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
         }
         .student{
             width:100%;
@@ -62,16 +65,11 @@
         .detailList{
             display:flex;
             justify-content:center;
-            margin:15px 0 5px 0;
-        }
-        .wMsg{
-            text-align:center;
-            font-family:var(--roboto);
-            color:var(--success);
+            margin-top:15px;
         }
         .scanDetails{
             background:var(--glassy);
-            padding:20px;
+            padding:10px 20px;
             border-radius:10px;
             border:2px solid red;
             animation: borderAnimation 5s infinite;
@@ -80,6 +78,49 @@
             color:var(--white);
             font-family:var(--roboto);
             font-size:30px;
+        }
+        #inputProjects{
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            margin-top:20px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            padding:15px 20px;
+        }
+        #inputProjects>label{
+            font-family:var(--actor);
+            color:var(--text);
+            font-size:20px;
+        }
+        #cProjects{
+            width:250px;
+            font-family:var(--actor);
+            color:var(--placeholder);
+            background:var(--input);
+            border: none;
+            height: 30px;
+            padding-left: 10px;
+            font-size: 15px;
+            border-radius: 10px 0 0 0;
+        }
+        #cProjects:active{
+            border:2px solid var(--border);
+        }
+        .submitBtn{
+            color:var(--white);
+            font-family:var(--actor);
+            font-size:18px;
+            margin-left: 1px;
+            background: var(--input);
+            border: none;
+            height: 30px;
+            padding: 0 10px;
+            border-radius: 0 0 10px 0;
+            text-transform:uppercase;
+        }
+        .submitBtn:hover{
+            background:black;
+            color:white;
         }
         .details>li{
             color:var(--text);
@@ -286,6 +327,50 @@
     </style>
 </head>
 <body>
+    <!-- Unset already setted sessions <-Start->-->
+    <?php
+    // Check if any of the specified session variables is set
+    if (
+        isset($_SESSION['error']) ||
+        isset($_SESSION['timeIn']) ||
+        (isset($_SESSION['timeOut']) && isset($_POST['submit']))||
+        isset($_SESSION['warning']) ||
+        isset($_SESSION['qrNotSet'])
+    ) {
+        // Set a timeout in JavaScript to trigger an AJAX request after 5 seconds
+        echo "<script>
+                setTimeout(function() {
+                    var xhttp = new XMLHttpRequest();
+                    xhttp.open('GET', 'unset_session.php', true);
+                    xhttp.send();
+                }, 5000);
+              </script>";
+    }
+    ?>
+    <!-- Unset already setted sessions <-End->-->
+
+    <?php
+
+    if(isset($_POST['submit'])){
+
+        $studentID = $_SESSION['QR'];
+        $cProjects = $_POST['cProjects'];
+
+        include_once "db_connection.php";
+
+        //Update 'CompletedProjects' in daily_users table
+        $updateDailyUsers = $db->prepare("UPDATE `daily_users` SET `CompletedProjects`=? WHERE `StudentID`=?");
+        $updateDailyUsers->execute(array($cProjects,$studentID));
+
+        //Update 'CompletedProjects' in students table
+        $updateStudents = $db->prepare("UPDATE `students` SET `ProjectsCompleted` = `ProjectsCompleted`+? WHERE `StudentID`=?");
+        $updateStudents->execute(array($cProjects,$studentID));
+
+    }
+
+    ?>
+
+
     <!-- Structure of Camera Preview and Input Boxes <-Start-> -->
 
     <section class="wrapper">
@@ -314,6 +399,7 @@
         <div class="w-100">
             <button id="startScanButton" class="btn-scan">Hover Me! Then click me to Start Scan <img src="images/icons8-qr-code.gif"></button>
         </div>
+        
         <div class="student" id="student">
             <div class="sDetails">
                 <form action="insert1.php" method="POST" class="form-horizontal">
@@ -351,35 +437,60 @@
                             <li>Projects Completed : <?php echo $row['ProjectsCompleted'] ?></li>
                         </ol>
                     </div>
-                    <div>
-                        <h3 class="wMsg">
-                            Happy Learning!
-                        </h3>
-                    </div>
                 </div>
                 <?php
                 }};
                 ?>
             </div>
         </div>
+
         <div class="scanner">
             <?php
                 // unset($_SESSION['success']);
                 // unset($_SESSION['error']);
                 if(isset($_SESSION['error'])){
                     echo"
-                        <div id='error' class='alert alert-danger'>
-                            <h4>Error!</h4>
-                            ".$_SESSION['error']."
-                        </div>
+                        <div id='error'></div>
                     ";
                 }
-                if(isset($_SESSION['success'])){
+                if(isset($_SESSION['timeIn'])){
                     echo"
-                        <div id='success' class='alert alert-success' style='background:green; color:white;'>
-                            <h4>Success!</h4>
-                            ".$_SESSION['success']."
-                        </div>
+                        <div id='timeIn'></div>
+                    ";
+                }
+                if(isset($_SESSION['timeOut'])){
+                    if(!isset($_POST['submit'])){
+                        echo"
+                            <form name='inputProjects' id='inputProjects' method='POST'>
+                                <label for='cProjects'>How many project completed you today?</label>
+                                <div class='inputRow'>
+                                    <input id='cProjects' name='cProjects' type='text' placeholder='Projects Count'>
+                                    <input class='submitBtn' type='submit' name='submit' value='Submit'>
+                                </div>
+                            </form>
+                        ";
+                    }
+
+                    // Visible timeOut Div
+                    if(isset($_POST['submit'])){
+                        echo"
+                            <div id='timeOut'></div>
+                        ";
+
+                        unset($_POST['submit']);
+
+                        // header("location:index.php");
+                    }
+
+                }
+                if(isset($_SESSION['warning'])){
+                    echo"
+                        <div id='warning'></div>
+                    ";
+                }
+                if(isset($_SESSION['qrNotSet'])){
+                    echo"
+                        <div id='qrNotSet'></div>
                     ";
                 }
             ?>
@@ -387,18 +498,7 @@
         </div>
     </section>
 
-
-    <!-- Check <-Start-> -->
-
     <div class="notifications"></div>
-    <div class="buttons">
-        <!-- <button id="success">Success</button> -->
-        <button id="error">Error</button>
-        <button id="warning">Warning</button>
-        <button id="info">Info</button>
-    </div>
-
-    <!-- Check <-End-> -->
 
     <!-- Structure of Camera Preview and Input Boxes <-End-> -->
 
@@ -440,26 +540,6 @@
     });
 
         // Read the QR Code <---End--->
-
-
-        // Set Timeout for massages <---Start--->
-
-        setTimeout(function(){
-
-            <?php
-            if(isset($_SESSION['error'])){
-                unset($_SESSION['error']);
-            }
-
-            if(isset($_SESSION['success'])){
-                unset($_SESSION['success']);
-            }
-            ?>
-            
-        },4000);
-
-        // Set Timeout for massages <---End--->
-
 
         // Update time every second <---Start--->
 

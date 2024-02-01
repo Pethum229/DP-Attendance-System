@@ -1,8 +1,9 @@
 let notifications = document.querySelector('.notifications');
-    let success = document.getElementById('success');
+    let timeIn = document.getElementById('timeIn');
+    let timeOut = document.getElementById('timeOut');
     let error = document.getElementById('error');
     let warning = document.getElementById('warning');
-    let info = document.getElementById('info');
+    let qrNotSet = document.getElementById('qrNotSet');
     
     function createToast(type, icon, title, text){
         let newToast = document.createElement('div');
@@ -21,36 +22,42 @@ let notifications = document.querySelector('.notifications');
         )
     }
 
-    if(success){
-        createToast();
+    if(timeIn){
+        let type = 'success';
+        let icon = 'fa-solid fa-circle-check';
+        let title = 'Time In Success!';
+        let text = 'Study well & become a developer.';
+        createToast(type, icon, title, text);
     }
 
-    // success.onclick = function(){
-    //     console.log("Clicked");
-    //     let type = 'success';
-    //     let icon = 'fa-solid fa-circle-check';
-    //     let title = 'Success';
-    //     let text = 'This is a success toast.';
-    //     createToast(type, icon, title, text);
-    // }
-    error.onclick = function(){
+    if(timeOut){
+        let type = 'info';
+        let icon = 'fa-solid fa-circle-check';
+        let title = 'Time Out Success!';
+        let text = 'Go home carefully & come again.';
+        createToast(type, icon, title, text);
+    }
+
+    if(error){
         let type = 'error';
         let icon = 'fa-solid fa-circle-exclamation';
-        let title = 'Error';
-        let text = 'This is a error toast.';
+        let title = 'Error!';
+        let text = 'Database Error. Please contact developer';
         createToast(type, icon, title, text);
     }
-    warning.onclick = function(){
+
+    if(warning){
         let type = 'warning';
         let icon = 'fa-solid fa-triangle-exclamation';
-        let title = 'Warning';
-        let text = 'This is a warning toast.';
+        let title = 'Warning!';
+        let text = 'You are not attended 5 days in a row. Please contact teahcer and solve problem';
         createToast(type, icon, title, text);
     }
-    info.onclick = function(){
-        let type = 'info';
-        let icon = 'fa-solid fa-circle-info';
-        let title = 'Info';
-        let text = 'This is a info toast.';
+
+    if(qrNotSet){
+        let type = 'error';
+        let icon = 'fa-solid fa-circle-exclamation';
+        let title = 'Error!';
+        let text = 'Please scan qr code';
         createToast(type, icon, title, text);
     }

@@ -35,6 +35,7 @@
                         <tr>
                             <td>Student ID</td>
                             <td>Student Name</td>
+                            <td>Projects Completed (Today)</td>
                             <td>Time In</td>
                             <td>Time Out</td>
                             <td>Log Date</td>
@@ -47,7 +48,7 @@
                             $date = date('Y-m-d');
 
                             // $sql = "SELECT ID,StudentID,TimeIn FROM daily_users";
-                            $sql = $db->prepare("SELECT du.`StudentID`, du.`TimeIn`, du.`TimeOut`, du.`LogDate`, s.`StudentName` FROM `daily_users` du
+                            $sql = $db->prepare("SELECT du.`StudentID`, du.`TimeIn`, du.`TimeOut`, du.`LogDate`, s.`StudentName`, du.`CompletedProjects` FROM `daily_users` du
                                                     JOIN students s ON du.StudentID = s.StudentID
                                                         WHERE `LogDate`=?");
                             $sql->execute(array($date));
@@ -56,7 +57,7 @@
                             <tr>
                                 <td><?php echo $row['StudentID'] ?></td>
                                 <td><?php echo $row['StudentName'] ?></td>
-
+                                <td><?php echo $row['CompletedProjects'] ?></td>
                                 <td><?php echo $row['TimeIn'] ?></td>
                                 <td><?php echo $row['TimeOut'] ?></td>
                                 <td><?php echo $row['LogDate'] ?></td>
