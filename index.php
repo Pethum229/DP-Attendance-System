@@ -1,6 +1,10 @@
 <?php include "inc_header.php"; ?>
     <title>DP Attendance System</title>
     <style>
+        .blur {
+            filter: blur(5px); /* Adjust the blur intensity as needed */
+            overflow: hidden; /* Prevent scrolling when blurred */
+        }
         #preview{
             width:100%;
             height:300px;
@@ -84,7 +88,7 @@
             flex-direction:column;
             align-items:center;
             margin-top:20px;
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); */
             padding:15px 20px;
         }
         #inputProjects>label{
@@ -194,6 +198,42 @@
             left: 0;
             top: 0;
             border-radius: 10px;
+        }
+        .popup{
+            position:absolute;
+            top:-150%;
+            left:50%;
+            opacity:0;
+            transform:translate(-50%,-50%) scale(1.25);
+            width:460px;
+            padding:20px 30px;
+            background:var(--popup);
+            box-shadow:2px 2px 5px 5px rgba(0,0,0,0.15);
+            border-radius:10px;
+            transition:top 0ms ease-in-out 200ms,
+                       opacity 200ms ease-in-out 0ms,
+                       transform 200ms ease-in-out 0ms;
+        }
+        .popup.active{
+            top:50%;
+            opacity:1;
+            transform:translate(-50%,-50%) scale(1);
+            transition:top 0ms ease-in-out 0ms,
+                       opacity 200ms ease-in-out 0ms,
+                       transform 200ms ease-in-out 0ms;
+        }
+        .popup .close-btn{
+            position:absolute;
+            top:10px;
+            right:10px;
+            width:15px;
+            height:15px;
+            background:#888;
+            color:#eee;
+            text-align:center;
+            line-height:15px;
+            border-radius:15px;
+            cursor:pointer;
         }
         
         @keyframes glowing {
@@ -374,10 +414,10 @@
     <!-- Structure of Camera Preview and Input Boxes <-Start-> -->
 
     <section class="wrapper">
-        <div>
+        <div id="title">
             <h1 class="heading">Student Attendance System</h1>
         </div>
-        <div class="time">
+        <div id="time" class="time">
             <div class="timeContent">
                 <h2>Scan Your QR Code</h2>
 
@@ -396,7 +436,7 @@
 
             </div>
         </div>
-        <div class="w-100">
+        <div id="btnSS" class="w-100">
             <button id="startScanButton" class="btn-scan">Hover Me! Then click me to Start Scan <img src="images/icons8-qr-code.gif"></button>
         </div>
         
@@ -461,13 +501,15 @@
                 if(isset($_SESSION['timeOut'])){
                     if(!isset($_POST['submit'])){
                         echo"
-                            <form name='inputProjects' id='inputProjects' method='POST'>
-                                <label for='cProjects'>How many project completed you today?</label>
-                                <div class='inputRow'>
-                                    <input id='cProjects' name='cProjects' type='text' placeholder='Projects Count'>
-                                    <input class='submitBtn' type='submit' name='submit' value='Submit'>
-                                </div>
-                            </form>
+                            <div class='popup'>
+                                <form name='inputProjects' id='inputProjects' method='POST'>
+                                    <label for='cProjects'>How many project completed you today ?</label>
+                                    <div class='inputRow'>
+                                        <input id='cProjects' name='cProjects' type='text' placeholder='Projects Count'>
+                                        <input class='submitBtn' type='submit' id='subPro' name='submit' value='Submit'>
+                                    </div>
+                                </form>
+                            </div>
                         ";
                     }
 
@@ -569,6 +611,37 @@
 
 
         // Update time every second <---End--->
+
+
+        // Popup <---Start--->
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var popupElement = document.querySelector('.popup');
+
+            var title = document.getElementById('title');
+            var time = document.getElementById('time');
+            var btnSS = document.getElementById('btnSS');
+            var student = document.getElementById('student');
+        
+            if (popupElement) {
+                popupElement.classList.add('active');
+                title.classList.add('blur');
+                time.classList.add('blur');
+                btnSS.classList.add('blur');
+                student.classList.add('blur');
+            } else {
+                console.log('Popup Element is not loaded yet.');
+            }
+
+            document.getElementById('subPro').addEventListner("click",function(){
+                title.classList.remove('blur');
+                time.classList.remove('blur');
+                btnSS.classList.remove('blur');
+                student.classList.remove('blur');
+            });
+        });
+
+        // Popup <---End--->
 
     </script>
 
