@@ -2,7 +2,6 @@
     <title>Login</title>
     <style>
     body {
-      font-family: Arial, sans-serif;
       background-color: #0d1117; /* Adjust the background color */
       color: #c9d1d9;
       margin: 0;
@@ -28,11 +27,14 @@
         font-size:45px;
     }
     .login{
-        display:flex
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        margin-bottom:20px;
     }
     .login>i{
-        width:100px;
-        height:100px;
+        font-size:50px;
+        margin-left:20px;
     }
 
     /* Form Inputs */
@@ -62,6 +64,12 @@
     ::placeholder {
       color: #9CA3AF;
     }
+
+    .footer{
+        display:flex;
+        justify-content:space-between;
+    }
+
     </style>
 </head>
 <body>
@@ -71,11 +79,14 @@
             <i class="fa-solid fa-right-to-bracket"></i>
         </div>
         <form name="login" method="POST">
-            <input type="text" name="aName" placeholder="Username" >
+            <input type="text" name="aName" placeholder="Username">
             <input type="password" name="aPwd" placeholder="Password" >
             <input type="submit" value="Login" name="submit">
         </form>
-
+        <div class="footer">
+            <p>You haven't account ? <a href="register.php">Register</a></p>
+            <a href="#">Forgot Password</a>
+        </div>
     </section>
 
     <?php
