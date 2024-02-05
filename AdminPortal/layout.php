@@ -13,49 +13,49 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="dashboard.php">
                         <span class="icon"><ion-icon name="grid-outline"></ion-icon></span>
                         <span class="title">Dashboard</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="all.php">
                         <span class="icon"><ion-icon name="person-outline"></ion-icon></span>
-                        <span class="title">Today Students</span>
+                        <span class="title">All Students</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="add.php">
                         <span class="icon"><ion-icon name="person-add-outline"></ion-icon></span>
                         <span class="title">Add New Students</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
-                        <span class="icon"><ion-icon name="remove-circle-outline"></ion-icon></span>
-                        <span class="title">Not Attended Students</span>
+                    <a href="daily_attendance.php">
+                        <span class="icon"><ion-icon name="today-outline"></ion-icon></span>
+                        <span class="title">Today Students</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="removed.php">
+                        <span class="icon"><ion-icon name="person-remove-outline"></ion-icon></ion-icon></span>
+                        <span class="title">Removed Students</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="analytics.php">
+                        <span class="icon"><ion-icon name="analytics-outline"></ion-icon></span>
+                        <span class="title">Analytics</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="setting.php">
                         <span class="icon"><ion-icon name="settings-outline"></ion-icon></span>
                         <span class="title">Settings</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
-                        <span class="icon"><ion-icon name="checkmark-done-outline"></ion-icon></span>
-                        <span class="title">Check Students</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <span class="icon"><ion-icon name="hourglass-outline"></ion-icon></span>
-                        <span class="title">Make Time Table</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
+                    <a href="logout.php">
                         <span class="icon"><ion-icon name="log-out-outline"></ion-icon></span>
                         <span class="title">Logout</span>
                     </a>
@@ -72,41 +72,27 @@
                 </div>
                 <!-- Search -->
                 <div class="search">
-                    <label>
-                        <input type="text" placeholder="Search here">
-                        <ion-icon name="search-outline"></ion-icon>
-                    </label>
+                    <li>
+                        <a href="check.php">
+                            <span class="icon"><ion-icon name="checkmark-done-outline"></ion-icon></span>
+                            <span class="title">Check Students</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="timetable.php">
+                            <span class="icon"><ion-icon name="hourglass-outline"></ion-icon></span>
+                            <span class="title">Make Time Table</span>
+                        </a>
+                    </li>
                 </div>
                 <!-- UserImg -->
                 <div class="user">
-                    <img src="../images/OIP.jpg">
+                    <h4>Hi, Good Morning!</h4>
+                    <h4>Pethum</h4>
                 </div>
             </div>
 
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script src="layout.js"></script>
 
-    <script>
-        // Menu Toggle
-         let toggle = document.querySelector('.toggle');
-         let navigation = document.querySelector('.navigation');
-         let main = document.querySelector('.main');
-
-         toggle.onclick = function(){
-            navigation.classList.toggle('active');
-            main.classList.toggle('active');
-         }
-
-        // Add 'hovered' class to the selected list item
-        let list = document.querySelectorAll('.navigation li');
-
-        function activeLink() {
-            list.forEach((item) =>
-            item.classList.remove('hovered'));
-            this.classList.add('hovered');
-        }
-
-        list.forEach((item) =>
-        item.addEventListener('click', activeLink));
-
-    </script>
