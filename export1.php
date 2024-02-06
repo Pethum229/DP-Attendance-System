@@ -10,7 +10,7 @@
     $array = array();
 
     $file = fopen($filename,"w");
-    $array = array("ID","Student ID","Student Name","Address","Phone Number","Whatsapp Number","Birthday","Email","Projects Completed");
+    $array = array("ID","Student ID","Student Name","Address","Phone Number","Whatsapp Number","Birthday","Email","Projects Completed","Gender","Register Date");
     fputcsv($file,$array);
 
     foreach($result as $row){
@@ -23,8 +23,10 @@
         $Birthday = $row['Birthday'];
         $Email = $row['Email'];
         $ProjectsCompleted = $row['ProjectsCompleted'];
+        $Gender = $row['Gender'];
+        $RegDate = $row['RegDate'];
 
-        $array = array($ID,$StudentID,$StudentName,$Address,$PhoneNumber,$WhatsappNumber,$Birthday,$Email,$ProjectsCompleted);
+        $array = array($ID,$StudentID,$StudentName,$Address,$PhoneNumber,$WhatsappNumber,$Birthday,$Email,$ProjectsCompleted,$Gender,$RegDate);
         fputcsv($file,$array);
     }
     fclose($file);

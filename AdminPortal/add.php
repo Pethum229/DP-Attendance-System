@@ -16,9 +16,10 @@ if (isset($_POST['submit'])){
                                                     `Birthday`,
                                                     `Email`,
                                                     `ProjectsCompleted`,
+                                                    `Gender`,
                                                     `CampusId`,
                                                     `AttendanceStatus`)
-                                                        VALUES (?,?,?,?,?,?,?,?,?,?)")->execute(array($_POST['sId'],
+                                                        VALUES (?,?,?,?,?,?,?,?,?,?,?)")->execute(array($_POST['sId'],
                                                                                                     $_POST['sName'],
                                                                                                     $_POST['address'],
                                                                                                     $_POST['pNumber'],
@@ -26,6 +27,7 @@ if (isset($_POST['submit'])){
                                                                                                     $_POST['birthday'],
                                                                                                     $_POST['email'],
                                                                                                     $_POST['cProjects'],
+                                                                                                    $_POST['gender'],
                                                                                                     $_POST['cName'],
                                                                                                     '1'));
     
@@ -178,6 +180,27 @@ if (isset($_POST['submit'])){
             background:var(--blue);
             color:black;
             font-weight:700;
+        }
+        .genders{
+            display:flex;
+            justify-content:center;
+        }
+        .genderSelect{
+            display:flex;
+            align-items:center;
+            margin:0 20px;
+        }
+        .gender input{
+            box-shadow:none;
+        }
+        .gender label{
+            margin:0 8px;
+            color:white;
+        }
+        .gender h5{
+            text-align:center;
+            color:white;
+            margin-top:20px;
         }
     </style>
 </head>
@@ -339,6 +362,21 @@ if(isset($_POST['submit'])){
                         </select>
                     </div>
                 </div>
+            </div>
+
+            <div class="gender">
+                <h5>Gender</h5>
+                <div class="genders">
+                    <div class="genderSelect">
+                        <label for="male">Male</label>
+                        <input id="male" type="radio" name="gender" value="1">
+                    </div>
+                    <div class="genderSelect">
+                        <label for="female">Female</label>
+                        <input id="female" type="radio" name="gender" value="0">
+                    </div>
+                </div>
+                
             </div>
 
             <select name="cName" id="campusName">

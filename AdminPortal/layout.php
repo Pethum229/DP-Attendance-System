@@ -43,7 +43,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="analytics.php">
+                    <a href="attendance_overview.php">
                         <span class="icon"><ion-icon name="analytics-outline"></ion-icon></span>
                         <span class="title">Analytics</span>
                     </a>
