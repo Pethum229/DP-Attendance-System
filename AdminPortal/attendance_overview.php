@@ -1,5 +1,45 @@
-<?php include "analytics.php" ?>
+<?php include "layout.php" ?>
 <style>
+        *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+    }
+    .anlytics{
+        background:#11161d;
+        margin:20px;
+        padding: 20px 40px;
+        border-radius:20px;
+        width:100%;
+    }
+    .tabs{
+        display:flex;
+        justify-content:space-between;
+        margin-bottom:30px;
+    }
+    .tabs a{
+        text-decoration:none;
+        font-size:16px;
+        background:black;
+        padding:10px 20px;
+        border-radius:15px 15px 0 0;
+    }
+    .tab-link {
+        padding: 10px 20px;
+        margin-right: 10px;
+        background-color: #f5f5f5;
+        color: #888;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s, color 0.3s;
+    }
+    .tab-link.clicked {
+        background-color: #387be2;
+        color: #fff;
+    }
+
+    /* Attendance Overview */
+
     .dailyAttendance{
         display:flex;
         flex-direction:column;
@@ -22,9 +62,6 @@
     }
     form label{
         color:yellow;
-    }
-    #week , #month{
-        
     }
 </style>
 <body>
@@ -65,37 +102,45 @@
         }
     }
 ?>
-
-    <div class="dailyAttendance">
-        <h2>
-            <?php if(isset($_GET['search'])){
-                if($_GET['attendanceAnalytics'] == 7){
-                    echo "Weekly ";
-                }else{
-                    echo "Monthly ";
-                }
-            }else{
-                echo "Weekly ";
-            }
-            ?> 
-            Attendance Overview
-        </h2>
-        <form>
-            <label for="week">Weekly</label>
-            <input id="week" required name="attendanceAnalytics" value="7" type="radio">
-            <label for="month">Monthly</label>
-            <input id="month" name="attendanceAnalytics" value="30" type="radio">
-            <input type="submit" name="search" value="Update">
-        </form>
-        <canvas id="dailyAttendance"></canvas>
-    </div>
-
-
-    </div>
+    <section>
+        <!-- Charts -->
+        <div class="anlytics">
+            <div class="tabs">
+                <a class="tab-link" href="summary.php">Summary</a>
+                <a class="tab-link clicked" href="attendance_overview.php">Attendance Overview</a>
+                <a class="tab-link" href="time_table_overview.php">Time Table Overview</a>
+                <a class="tab-link" href="new_student_overview.php">New Students Overview</a>
+            </div>
+            <div class="dailyAttendance">
+                <h2>
+                    <?php if(isset($_GET['search'])){
+                        if($_GET['attendanceAnalytics'] == 7){
+                            echo "Weekly ";
+                        }else{
+                            echo "Monthly ";
+                        }
+                    }else{
+                        echo "Weekly ";
+                    }
+                    ?> 
+                    Attendance Overview
+                </h2>
+                <form>
+                    <label for="week">Weekly</label>
+                    <input id="week" required name="attendanceAnalytics" value="7" type="radio">
+                    <label for="month">Monthly</label>
+                    <input id="month" name="attendanceAnalytics" value="30" type="radio">
+                    <input type="submit" name="search" value="Update">
+                </form>
+                <canvas id="dailyAttendance"></canvas>
+            </div>
+        </div>
     </section>
+
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script>
     // Charts
     const ctx = document.getElementById('dailyAttendance');
@@ -136,5 +181,6 @@
       }
     });
 </script>
+
 </body>
 </html>

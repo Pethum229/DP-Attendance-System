@@ -17,8 +17,8 @@
         $sql = $db->prepare("SELECT * FROM `daily_users` WHERE `StudentID`=? AND `LOGDATE`=? AND `Status`=?");
         $sql->execute(array($text,$date,'0'));
         if($sql->rowCount()>0){
-            $sql = $db->prepare("UPDATE `daily_users` SET `TimeOut`=?, `Status`=? WHERE `StudentID`=? AND `LogDate`=?");
-            $sql-> execute(array($time,'1',$text,$date));
+            $sql = $db->prepare("UPDATE `daily_users` SET `TimeOut`=?, `Status`=? WHERE `StudentID`=? AND `LogDate`=? AND `Status`=?");
+            $sql-> execute(array($time,'1',$text,$date,'0'));
             $_SESSION['timeOut'] = 'Successfully Time Out';
         }else{
             // Check scanned student IsActive
