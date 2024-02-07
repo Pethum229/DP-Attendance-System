@@ -177,34 +177,75 @@
     }
     </style>
 
+    <?php
+
+        include "../db_connection.php";
+
+        // Check Total Students
+
+        $students = $db->prepare("SELECT COUNT(*) AS activeStudentCount FROM `students` WHERE `IsActive`=?");
+        $students->execute(array('1'));
+        $activeStudents = $students->fetch(PDO::FETCH_ASSOC);
+
+        $activeCount = $activeStudents['activeStudentCount'];
+
+
+        //Check Daily Attended Students
+
+        $date = date("Y-m-d");
+
+        $aStudents = $db->prepare("SELECT COUNT(*) AS attendedStudents FROM `daily_users` WHERE `LogDate`=?");
+        $aStudents->execute(array($date));
+        $attendedStudents = $aStudents->fetch(PDO::FETCH_ASSOC);
+
+        $attendedCount = $attendedStudents['attendedStudents'];
+
+        // Check Not Attended Students Today
+
+        $nAStudents = $db->prepare("SELECT COUNT(*) AS notAttendedStudents FROM `daily_time_tables`");
+        $nAStudents->execute();
+        $notAttendedStudents = $nAStudents->fetch(PDO::FETCH_ASSOC);
+        
+        $notAttendedCount = $notAttendedStudents['notAttendedStudents'];
+        
+
+        // Check Removed Students
+
+        $rtudents = $db->prepare("SELECT COUNT(*) AS removedStudents FROM `students` WHERE `IsActive`=?");
+        $rtudents->execute(array('0'));
+        $removedeStudents = $rtudents->fetch(PDO::FETCH_ASSOC);
+
+        $removedCount = $removedeStudents['removedStudents'];
+    ?>
+
             <div class="cardBox">
                 <div class="card">
                     <div class="iconBx">
                         <ion-icon name="people-outline"></ion-icon>
                     </div>
                     <div class="cardName">Total Students</div>
-                    <div class="numbers">1,504</div>
+                    <div class="numbers"><?php echo $activeCount ?></div>
                 </div>
                 <div class="card">
                     <div class="iconBx">
                         <ion-icon name="eye-outline"></ion-icon>
                     </div>
                     <div class="cardName">Daily Attended Students</div>
-                    <div class="numbers">50</div>
+                    <div class="numbers"><?php echo $attendedCount ?></div>
                 </div>
                 <div class="card">
                     <div class="iconBx">
                         <ion-icon name="alert-outline"></ion-icon>
                     </div>
                     <div class="cardName">Not Attended Students</div>
-                    <div class="numbers">12</div>
+                    <div class="numbers"><?php echo $notAttendedCount ?></div>
                 </div>
                 <div class="card">
                     <div class="iconBx">
                         <ion-icon name="close-outline"></ion-icon>
                     </div>
                     <div class="cardName">Removed Students</div>
-                    <div class="numbers">30</div>
+                    <div class="numbers"><?php echo $removedCount ?></div>
                 </div>
             </div>
 
@@ -225,42 +266,26 @@
                             </tr>
                         </thead>
                         <tbody>
+
+                        <?php
+
+                        include "../db_connection.php";
+                        $lastStudents = $db->prepare("SELECT du.`StudentID`, du.`TimeIn`, du.`TimeOut`, s.`StudentName` FROM `daily_users` du JOIN `students` s ON du.`StudentID` = s.`StudentID` ORDER BY du.`ID` DESC LIMIT 7");
+                        $lastStudents->execute(array());
+                        while ($row = $lastStudents -> fetch (PDO::FETCH_ASSOC)){  
+
+                        ?>
+
                             <tr>
-                                <td>0237Hp</td>
-                                <td>D.A Pethum Priyashantha</td>
-                                <td>10.37 A.M</td>
-                                <td>12.02 P.M</td>
+                                <td><?php echo $row['StudentID'] ?></td>
+                                <td><?php echo $row['StudentName'] ?></td>
+                                <td><?php echo $row['TimeIn'] ?></td>
+                                <td><?php echo $row['TimeOut'] ?></td>
                             </tr>
-                            <tr>
-                                <td>0037Hp</td>
-                                <td>D.A Sahan Sandeepa</td>
-                                <td>09.01 A.M</td>
-                                <td>01.02 P.M</td>
-                            </tr>
-                            <tr>
-                                <td>0124Hp</td>
-                                <td>P.P Rasanjana</td>
-                                <td>05.37 A.M</td>
-                                <td>7.35 P.M</td>
-                            </tr>
-                            <tr>
-                                <td>0148Hp</td>
-                                <td>C.D Chandeepa Sathsara</td>
-                                <td>11.05 A.M</td>
-                                <td>2.12 P.M</td>
-                            </tr>
-                            <tr>
-                                <td>0421Hp</td>
-                                <td>K.K Chabiitha</td>
-                                <td>05.45 A.M</td>
-                                <td>01.01 P.M</td>
-                            </tr>
-                            <tr>
-                                <td>0245Hp</td>
-                                <td>O.O Kavishka Rathnayake</td>
-                                <td>08.45 A.M</td>
-                                <td>03.35 P.M</td>
-                            </tr>
+
+                        <?php
+                        }
+                        ?>
                         </tbody>
                     </table>
                 </div>
@@ -271,11 +296,29 @@
                         <h2>High Performance</h2>
                     </div>
                     <table>
-                        <tr>
-                            <td width="60px"><div class="imgBx"><img src="../images/1.png"></div></td>
-                            <td><h4 class="one">Sahan Sandeepa<br><span>0037Hp</span></h4></td>
-                        </tr>
-                        <tr>
+
+                    <?php
+
+                    include "../db_connection.php";                 
+
+                    $sql = $db->prepare("SELECT du.*, s.StudentName 
+                                        FROM `daily_users` du 
+                                        INNER JOIN `students` s ON du.StudentID = s.StudentID 
+                                        WHERE du.`LogDate` = ? AND du.`Status` = ? 
+                                        ORDER BY du.`CompletedProjects` DESC 
+                                        LIMIT 5");
+                    $sql->execute(array($date, '1'));
+                    $results = $sql->fetchAll(PDO::FETCH_ASSOC);                    
+
+                    foreach ($results as $row) {
+                        echo "<tr>";
+                        echo "<td width='60px'><div class='imgBx'><img src='../images/1.png'></div></td>";
+                        echo "<td><h4 class='one'>{$row['StudentName']}<br><span style='margin-right:50px'>{$row['StudentID']}</span><span>{$row['CompletedProjects']}</span><span>Projects</span></h4></td>"; // Corrected line
+                        echo "</tr>";
+                    }
+
+                    ?>
+                        <!-- <tr>
                             <td width="60px"><div class="imgBx"><img src="../images/2.png"></div></td>
                             <td><h4 class="two">Ravindu Rasanjana<br><span>0547Hp</span></h4></td>
                         </tr>
@@ -290,7 +333,7 @@
                         <tr>
                             <td width="60px"><div class="imgBx"><img src="../images/5.png"></div></td>
                             <td><h4 class="five">Kavishka Rathnayaka<br><span>0784Hp</span></h4></td>
-                        </tr>
+                        </tr> -->
                     </table>
                 </div>
             </div>
