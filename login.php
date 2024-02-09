@@ -1,3 +1,76 @@
+<?php
+
+// Define Variables
+$emailMsg4="";
+$emailMsg5="";
+$emailMsg6="";
+$pwdMsg3="";
+$pwdMsg4="";
+$err2="";
+
+if(isset($_POST['submit'])){
+    // Email Validation
+    $_POST['aEmail'] = trim($_POST['aEmail']);
+    if(empty($_POST['aEmail'])) $emailMsg4 = "Email cannot be empty";
+    elseif(!filter_var($_POST['aEmail'],FILTER_VALIDATE_EMAIL)) $emailMsg5 = "Email address is not valid";
+
+    // Passwords Validation
+    if(empty($_POST['aPwd'])) $pwdMsg3 = "Password cannot be empty";
+
+    // DB Operations
+    if($emailMsg4=="" && $pwdMsg3==""){
+        try{  
+            // connect to db
+            include "db_connection.php";
+        
+            // Check for registered user
+            $check = $db->prepare("SELECT * FROM `admins` WHERE `Email`=?");
+            $check ->execute(array($_POST['aEmail']));
+        
+            if ($check->rowCount()>0){
+                if ($result = $check->fetch()){
+                    // Password Verification
+                    if (password_verify($_POST['aPwd'],$result['Password'])){
+                        // Set session variables
+                        $_SESSION['name']= $result['Username'];
+                        // $_SESSION['id']=$result['CampusId'];
+                    
+                        // Redirect to homepage
+                        header("location:AdminPortal/dashboard.php");
+
+                    }else $pwdMsg4 = "Password you entered is incorrect";
+                }
+            }else $emailMsg6 = "Email address you entered is not registered";
+
+        }catch (PDOException $e){
+            $err2=$e->getMessage();
+        }
+    }
+
+    // Create div for toast animation and javascript
+    if($emailMsg4 != ""){
+        echo "<div id='emailMsg4'><div>";
+    }
+    if($emailMsg5 != ""){
+        echo "<div id='emailMsg5'><div>";
+    }
+    if($emailMsg6 != ""){
+        echo "<div id='emailMsg6'><div>";
+    }
+    if($pwdMsg3 != ""){
+        echo "<div id='pwdMsg3'><div>";
+    }
+    if($pwdMsg4 != ""){
+        echo "<div id='pwdMsg4'><div>";
+    }
+    if($err2 != ""){
+        echo "<div id='err2'><div>";
+    }
+    
+}
+
+?>
+
 <?php include "inc_header.php"; ?>
     <title>Login</title>
     <link rel="stylesheet" href="toast.css">
@@ -78,6 +151,8 @@
     <?php
         if(isset($_GET['registered'])){
             echo "<div id='resgisterSuccess'></div>";
+        }elseif(isset($_GET['loggedout'])){
+            echo "<div id='loggedout'></div>";
         }
     ?>
 
@@ -87,8 +162,8 @@
             <i class="fa-solid fa-right-to-bracket"></i>
         </div>
         <form name="login" method="POST">
-            <input type="text" name="aName" placeholder="Username">
-            <input type="password" name="aPwd" placeholder="Password" >
+            <input type="text" name="aEmail" placeholder="Email">
+            <input type="password" name="aPwd" placeholder="Password">
             <input type="submit" value="Login" name="submit">
         </form>
         <div class="footer">
@@ -98,41 +173,6 @@
     </section>
 
     <div class="notifications"></div>
-
-    <?php
-
-    if(isset($_POST['submit'])){
-        try{  
-            // connect to db
-            include "db_connection.php";
-        
-            // Check for registered user
-            $check = $db->prepare("SELECT * FROM `admins` WHERE `Username`=?");
-            $check ->execute(array($_POST['aName']));
-        
-            if ($check->rowCount()>0){
-                if ($result = $check->fetch()){
-                    // Password Verification
-                    if (password_verify($_POST['aPwd'],$result['Password'])){
-                        // Set session variables
-                        $_SESSION['name']= $result['Username'];
-                        $_SESSION['id']=$result['CampusId'];
-                    
-                        echo "Successfully loggedin";
-                    
-                        // Redirect to homepage
-                        header("location:AdminPortal/dashboard.php");
-                    }
-                
-                }
-            }
-
-        }catch (PDOException $e){
-            $msg.=$e->getMessage();
-        }
-    }
-
-    ?>
 
     <script src="app.js"></script>
 </body>

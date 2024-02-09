@@ -1,4 +1,4 @@
-<?php include "../inc_header.php"; ?>
+<?php include "../inc_header.php";?>
     <title>Admin Portal</title>
     <link rel="stylesheet" href="layout.css">
 </head>
@@ -108,14 +108,12 @@
                         $welcome = "Good Night";
                     }
 
-                    // echo $currentHour;
                 ?>
-
 
                 <!-- UserImg -->
                 <div class="user">
                     <h4>Hi, <?php echo $welcome ?></h4>
-                    <h4><?php echo $_SESSION['name'] ?></h4>
+                    <h4><?php if(isset($_SESSON['name'])){echo $_SESSION['name']; }else{ echo "Guest"; }?></h4>
                 </div>
             </div>
 

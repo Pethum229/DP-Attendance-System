@@ -14,7 +14,15 @@
     let campusMsg = document.getElementById('campusMsg');
     let resgisterSuccess = document.getElementById('resgisterSuccess');
     let dbErr = document.getElementById('dbErr');
-    let err = document.getElementById('err');
+    let err1 = document.getElementById('err1');
+    let emailMsg4 = document.getElementById('emailMsg4');
+    let emailMsg5 = document.getElementById('emailMsg5');
+    let emailMsg6 = document.getElementById('emailMsg6');
+    let pwdMsg3 = document.getElementById('pwdMsg3');
+    let pwdMsg4 = document.getElementById('pwdMsg4');
+    let loginSuccess = document.getElementById('loginSuccess');
+    let loggedout = document.getElementById('loggedout');
+    let err2 = document.getElementById('err2');
     
     function createToast(type, icon, title, text){
         let newToast = document.createElement('div');
@@ -143,10 +151,66 @@
         let text = 'Database Error';
         createToast(type, icon, title, text);
     }
-    if(err){
+    if(err1){
         let type = 'error';
         let icon = 'fa-solid fa-circle-exclamation';
         let title = 'Error!';
         let text = 'Database Error. Please Contact admin';
+        createToast(type, icon, title, text);
+    }
+    if(emailMsg4){
+        let type = 'error';
+        let icon = 'fa-solid fa-circle-exclamation';
+        let title = 'Error!';
+        let text = 'Email cannot be empty';
+        createToast(type, icon, title, text);
+    }
+    if(emailMsg5){
+        let type = 'error';
+        let icon = 'fa-solid fa-circle-exclamation';
+        let title = 'Error!';
+        let text = 'Email address is not valid';
+        createToast(type, icon, title, text);
+    }
+    if(emailMsg6){
+        let type = 'error';
+        let icon = 'fa-solid fa-circle-exclamation';
+        let title = 'Error!';
+        let text = 'Email address you entered is not registered';
+        createToast(type, icon, title, text);
+    }
+    if(pwdMsg3){
+        let type = 'error';
+        let icon = 'fa-solid fa-circle-exclamation';
+        let title = 'Error!';
+        let text = 'Password cannot be empty';
+        createToast(type, icon, title, text);
+    }
+    if(pwdMsg4){
+        let type = 'error';
+        let icon = 'fa-solid fa-circle-exclamation';
+        let title = 'Error!';
+        let text = 'Password you entered is incorrect';
+        createToast(type, icon, title, text);
+    }
+    if(loginSuccess){
+        let type = 'success';
+        let icon = 'fa-solid fa-circle-check';
+        let title = 'Success!';
+        let text = 'You are loggedin successfully';
+        createToast(type, icon, title, text);
+    }
+    if(loggedout){
+        let type = 'success';
+        let icon = 'fa-solid fa-circle-check';
+        let title = 'Success!';
+        let text = 'You are loggedout successfully';
+        createToast(type, icon, title, text);
+    }
+    if(err2){
+        let type = 'error';
+        let icon = 'fa-solid fa-circle-exclamation';
+        let title = 'Error!';
+        let text = 'Database error. Please contact admin';
         createToast(type, icon, title, text);
     }

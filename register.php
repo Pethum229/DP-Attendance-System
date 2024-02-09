@@ -57,14 +57,14 @@ if(isset($_POST['submit'])){
                                                     VALUES (?,?,?,?)")->execute(array($_POST['cName'],$_POST['email'],$_POST['aName'],$pwd));
 
                 if($adminInsert){
-                    header("location:login.php?registered=1");
+                    header("location:login.php?registered");
                     exit;
                 }else{
                     $dbErr = "Something went wrong! Please contact website admin";
                 }
             }
         }catch(PDOException $e){
-            $err = $e->getMessage();
+            $err1 = $e->getMessage();
         }
     }
 
@@ -97,7 +97,7 @@ if(isset($_POST['submit'])){
         echo "<div id='dbErr'><div>";
     }
     if($err != ""){
-        echo "<div id='err'><div>";
+        echo "<div id='err1'><div>";
     }
 }
 

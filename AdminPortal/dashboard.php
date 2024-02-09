@@ -1,4 +1,4 @@
-<?php include "layout.php"; ?>
+<?php include "layout.php"; $_SESSION['name']; ?>
 <title>Dashboard | Admin Portal</title>
 <style>
     .cardBox{
@@ -186,6 +186,12 @@
         position: relative;
     }
     </style>
+
+    <?php
+        if(isset($_GET['loggedin'])){
+            echo "<div id='loginSuccess'></div>";
+        }
+    ?>
 
     <?php
 
