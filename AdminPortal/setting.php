@@ -51,13 +51,41 @@
     </style>
 </head>
 <body>
+
+    <?php
+
+    include "../db_connection.php";
+
+    if(isset($_POST['reset'])){
+        $pwd = $db->prepare("SELECT `Password` FROM `admins` WHERE `Username`=?");
+        $pwd ->execute(array($_SESSION['name']));
+
+        if($pwd->rowCount()>0){
+            $result = $pwd->fetch();
+
+            // Old Password Verification
+            if(password_verify($_POST['cPwd'],$result['Password'])){
+                $update=$db->prepare("UPDATE `admins` SET `Password`=? WHERE `Username`=?");
+                $update->execute(array(password_hash($_POST['nPwd'],PASSWORD_DEFAULT,),$_SESSION['name']));
+
+                if($update->rowCount()>0){
+                    echo "Password Updated Successfully";
+                }else{
+                    echo "Error Updating Password" . $update->errorInfo()[2];
+                }
+            }
+        }
+    }
+
+    ?>
+
     <section class="row">
         <h1>Change Your Password</h1>
-        <form action="">
-            <input type="text" placeholder="Current Password">
-            <input type="text" placeholder="New Password">
-            <input type="text" placeholder="Confirm New Password">
-            <input class="buttons" type="submit" value="Reset Password">
+        <form method="POST">
+            <input type="text" name="cPwd" placeholder="Current Password">
+            <input type="text" name="nPwd" placeholder="New Password">
+            <input type="text" name="cNPwd" placeholder="Confirm New Password">
+            <input class="buttons" type="submit" name="reset" value="Reset Password">
         </form>
     </section>
 

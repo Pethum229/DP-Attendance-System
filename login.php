@@ -105,7 +105,7 @@
                     // Password Verification
                     if (password_verify($_POST['aPwd'],$result['Password'])){
                         // Set session variables
-                        $_SESSION['id']= $result['Username'];
+                        $_SESSION['name']= $result['Username'];
                     
                         echo "Successfully loggedin";
                     

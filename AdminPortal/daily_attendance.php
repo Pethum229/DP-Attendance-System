@@ -84,6 +84,10 @@
             border: 1px solid var(--blue);
             color: var(--blue);
         }
+        .filterBtn:hover{
+            background:var(--blue);
+            color:black !important;
+        }
 
     </style>
 </head>
@@ -101,6 +105,7 @@
                         <option value="5">100</option>
                     </select>
                     <input type="text" placeholder="Search by Name or ID">
+                    <input style="border:1px solid white; padding:2px 15px; color:white;" class="filterBtn" type="submit" value="Filter">
                 </form>
                 <button type="submit" class="exportBtn" onclick="Export()">
                     Export

@@ -81,6 +81,11 @@
         color:var(--white);
         border-radius:6px;
     }
+    .btn:hover{
+        color:#11161d;
+        font-weight:bold;
+        border-radius:0 50px 50px 0;
+    }
     .details .table{
         width:100%;
         border-collapse:collapse;
@@ -162,18 +167,23 @@
     }
     .one{
         color:#FFD700;
+        position: relative;
     }
     .two{
         color:#800080;
+        position: relative;
     }
     .three{
         color: #C0C0C0;
+        position: relative;
     }
     .four{
         color:#E5E4E2;
+        position: relative;
     }
     .five{
         color:#CD7F32;
+        position: relative;
     }
     </style>
 
@@ -254,7 +264,7 @@
                 <div class="lastAttendance">
                     <div class="cardHeader">
                         <h2>Last Attended Students</h2>
-                        <a href="#" class="btn">View All Students</a>
+                        <a href="daily_attendance.php" class="btn">View All Students</a>
                     </div>
                     <table>
                         <thead>
@@ -293,7 +303,7 @@
                 <!-- New Students -->
                 <div class="highPerformance">
                     <div class="cardHeader">
-                        <h2>High Performance</h2>
+                        <h2>Top Performers</h2>
                     </div>
                     <table>
 
@@ -308,32 +318,25 @@
                                         ORDER BY du.`CompletedProjects` DESC 
                                         LIMIT 5");
                     $sql->execute(array($date, '1'));
-                    $results = $sql->fetchAll(PDO::FETCH_ASSOC);                    
+                    $results = $sql->fetchAll(PDO::FETCH_ASSOC);
+                    
+                    // Define images and CSS classes for different rows
+                    $imagePaths = ["../images/1.png", "../images/2.png", "../images/3.png", "../images/4.png", "../images/5.png"];
+                    $cssClasses = ["one", "two", "three", "four", "five"];
+
+                    // Counter to track the index of the row being processed
+                    $rowIndex = 0;
 
                     foreach ($results as $row) {
                         echo "<tr>";
-                        echo "<td width='60px'><div class='imgBx'><img src='../images/1.png'></div></td>";
-                        echo "<td><h4 class='one'>{$row['StudentName']}<br><span style='margin-right:50px'>{$row['StudentID']}</span><span>{$row['CompletedProjects']}</span><span>Projects</span></h4></td>"; // Corrected line
+                        echo "<td width='60px'><div class='imgBx'><img src='" . $imagePaths[$rowIndex] . "'></div></td>";
+                        echo "<td><h4 class='" . $cssClasses[$rowIndex] . "'>{$row['StudentName']}<br><span>{$row['StudentID']}</span><span style='position:absolute; bottom:0; right:0;'>{$row['CompletedProjects']} Projects</span></h4></td>";
                         echo "</tr>";
+                    
+                        $rowIndex++;
                     }
 
                     ?>
-                        <!-- <tr>
-                            <td width="60px"><div class="imgBx"><img src="../images/2.png"></div></td>
-                            <td><h4 class="two">Ravindu Rasanjana<br><span>0547Hp</span></h4></td>
-                        </tr>
-                        <tr>
-                            <td width="60px"><div class="imgBx"><img src="../images/3.png"></div></td>
-                            <td><h4 class="three">Chandeepa Sathsara<br><span>0214Hp</span></h4></td>
-                        </tr>
-                        <tr>
-                            <td width="60px"><div class="imgBx"><img src="../images/4.png"></div></td>
-                            <td><h4 class="four">Vihanga Vindoya<br><span>0287Hp</span></h4></td>
-                        </tr>
-                        <tr>
-                            <td width="60px"><div class="imgBx"><img src="../images/5.png"></div></td>
-                            <td><h4 class="five">Kavishka Rathnayaka<br><span>0784Hp</span></h4></td>
-                        </tr> -->
                     </table>
                 </div>
             </div>

@@ -399,7 +399,7 @@
         include_once "db_connection.php";
 
         //Update 'CompletedProjects' in daily_users table
-        $updateDailyUsers = $db->prepare("UPDATE `daily_users` SET `CompletedProjects`=? WHERE `StudentID`=? ORDER BY `TimeIn` DESC, LogDate ASC LIMIT 1");
+        $updateDailyUsers = $db->prepare("UPDATE `daily_users` SET `CompletedProjects`=? WHERE `StudentID`=? ORDER BY ID DESC LIMIT 1");
         $updateDailyUsers->execute(array($cProjects,$studentID));
 
         //Update 'CompletedProjects' in students table

@@ -89,6 +89,10 @@
             border: 1px solid var(--blue);
             color: var(--blue);
         }
+        .filterBtn:hover{
+            background:var(--blue);
+            color:black !important;
+        }
         </style>
 </head>
 <body>
@@ -96,7 +100,7 @@
         <div class="row">
             <div class="filters">
                 <form>
-                    <select name="" id="rows">
+                    <select name="rows" id="rows">
                         <option value="0">Select Row Count</option>
                         <option value="1">5</option>
                         <option value="2">10</option>
@@ -104,7 +108,8 @@
                         <option value="4">50</option>
                         <option value="5">100</option>
                     </select>
-                    <input type="text" placeholder="Search by Name or ID">
+                    <input type="text" name="student" placeholder="Search by Name or ID">
+                    <input style="border:1px solid white; padding:2px 15px; color:white;" class="filterBtn" type="submit" value="Filter">
                 </form>
                 <button type="submit" class="exportBtn" onclick="Export()">
                     Export

@@ -85,10 +85,37 @@
                         </a>
                     </li>
                 </div>
+                 
+                <!-- Set Time -->
+
+                <?php
+
+                    date_default_timezone_set('Asia/Colombo');
+                    $currentHour = date('G');
+
+                    if ($currentHour >= 0 && $currentHour < 12) {
+                        // Between 00:00 and 11:59
+                        $welcome = "Good Morning";
+
+                    } elseif ($currentHour >= 12 && $currentHour < 16) {
+                        // Between 12:00 and 15:59
+                        $welcome = "Good Afternoon";
+                    } elseif ($currentHour >= 16 && $currentHour < 19) {
+                        // Between 16:00 and 18:59
+                        $welcome = "Good Evening";
+                    } else {
+                        // Between 19:00 and 23:59
+                        $welcome = "Good Night";
+                    }
+
+                    // echo $currentHour;
+                ?>
+
+
                 <!-- UserImg -->
                 <div class="user">
-                    <h4>Hi, Good Morning!</h4>
-                    <h4>Pethum</h4>
+                    <h4>Hi, <?php echo $welcome ?></h4>
+                    <h4><?php echo $_SESSION['name'] ?></h4>
                 </div>
             </div>
 
