@@ -1,5 +1,6 @@
 <?php include "inc_header.php"; ?>
     <title>Login</title>
+    <link rel="stylesheet" href="toast.css">
     <style>
     body {
       background-color: #0d1117; /* Adjust the background color */
@@ -73,6 +74,13 @@
     </style>
 </head>
 <body>
+
+    <?php
+        if(isset($_GET['registered'])){
+            echo "<div id='resgisterSuccess'></div>";
+        }
+    ?>
+
     <section>
         <div class="login">
             <h1>Login</h1>
@@ -88,6 +96,8 @@
             <a href="#">Forgot Password</a>
         </div>
     </section>
+
+    <div class="notifications"></div>
 
     <?php
 
@@ -106,6 +116,7 @@
                     if (password_verify($_POST['aPwd'],$result['Password'])){
                         // Set session variables
                         $_SESSION['name']= $result['Username'];
+                        $_SESSION['id']=$result['CampusId'];
                     
                         echo "Successfully loggedin";
                     
@@ -122,5 +133,7 @@
     }
 
     ?>
+
+    <script src="app.js"></script>
 </body>
 </html>

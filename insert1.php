@@ -50,7 +50,7 @@
                 $deleteDetails -> execute(array($text));
 
             }else{
-                $_SESSION['warning'] = "You are not attended 5 days in a row. Please Contact admin to reregister";
+                $_SESSION['warning'] = "You are not attended 5 days in a row. Please Contact admin to reenroll";
             }
 
         }
