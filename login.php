@@ -1,76 +1,3 @@
-<?php
-
-// Define Variables
-$emailMsg4="";
-$emailMsg5="";
-$emailMsg6="";
-$pwdMsg3="";
-$pwdMsg4="";
-$err2="";
-
-if(isset($_POST['submit'])){
-    // Email Validation
-    $_POST['aEmail'] = trim($_POST['aEmail']);
-    if(empty($_POST['aEmail'])) $emailMsg4 = "Email cannot be empty";
-    elseif(!filter_var($_POST['aEmail'],FILTER_VALIDATE_EMAIL)) $emailMsg5 = "Email address is not valid";
-
-    // Passwords Validation
-    if(empty($_POST['aPwd'])) $pwdMsg3 = "Password cannot be empty";
-
-    // DB Operations
-    if($emailMsg4=="" && $pwdMsg3==""){
-        try{  
-            // connect to db
-            include "db_connection.php";
-        
-            // Check for registered user
-            $check = $db->prepare("SELECT * FROM `admins` WHERE `Email`=?");
-            $check ->execute(array($_POST['aEmail']));
-        
-            if ($check->rowCount()>0){
-                if ($result = $check->fetch()){
-                    // Password Verification
-                    if (password_verify($_POST['aPwd'],$result['Password'])){
-                        // Set session variables
-                        $_SESSION['name']= $result['Username'];
-                        // $_SESSION['id']=$result['CampusId'];
-                    
-                        // Redirect to homepage
-                        header("location:AdminPortal/dashboard.php");
-
-                    }else $pwdMsg4 = "Password you entered is incorrect";
-                }
-            }else $emailMsg6 = "Email address you entered is not registered";
-
-        }catch (PDOException $e){
-            $err2=$e->getMessage();
-        }
-    }
-
-    // Create div for toast animation and javascript
-    if($emailMsg4 != ""){
-        echo "<div id='emailMsg4'><div>";
-    }
-    if($emailMsg5 != ""){
-        echo "<div id='emailMsg5'><div>";
-    }
-    if($emailMsg6 != ""){
-        echo "<div id='emailMsg6'><div>";
-    }
-    if($pwdMsg3 != ""){
-        echo "<div id='pwdMsg3'><div>";
-    }
-    if($pwdMsg4 != ""){
-        echo "<div id='pwdMsg4'><div>";
-    }
-    if($err2 != ""){
-        echo "<div id='err2'><div>";
-    }
-    
-}
-
-?>
-
 <?php include "inc_header.php"; ?>
     <title>Login</title>
     <link rel="stylesheet" href="toast.css">
@@ -173,6 +100,79 @@ if(isset($_POST['submit'])){
     </section>
 
     <div class="notifications"></div>
+
+    <?php
+
+    // Define Variables
+    $emailMsg4="";
+    $emailMsg5="";
+    $emailMsg6="";
+    $pwdMsg3="";
+    $pwdMsg4="";
+    $err2="";
+        
+    if(isset($_POST['submit'])){
+        // Email Validation
+        $_POST['aEmail'] = trim($_POST['aEmail']);
+        if(empty($_POST['aEmail'])) $emailMsg4 = "Email cannot be empty";
+        elseif(!filter_var($_POST['aEmail'],FILTER_VALIDATE_EMAIL)) $emailMsg5 = "Email address is not valid";
+    
+        // Passwords Validation
+        if(empty($_POST['aPwd'])) $pwdMsg3 = "Password cannot be empty";
+    
+        // DB Operations
+        if($emailMsg4=="" && $pwdMsg3==""){
+            try{  
+                // connect to db
+                include "db_connection.php";
+            
+                // Check for registered user
+                $check = $db->prepare("SELECT * FROM `admins` WHERE `Email`=?");
+                $check ->execute(array($_POST['aEmail']));
+            
+                if ($check->rowCount()>0){
+                    if ($result = $check->fetch()){
+                        // Password Verification
+                        if (password_verify($_POST['aPwd'],$result['Password'])){
+                            // Set session variables
+                            $_SESSION['name']= $result['Username'];
+                            // $_SESSION['id']=$result['CampusId'];
+                        
+                            // Redirect to homepage
+                            header("location:AdminPortal/dashboard.php");
+                        
+                        }else $pwdMsg4 = "Password you entered is incorrect";
+                    }
+                }else $emailMsg6 = "Email address you entered is not registered";
+            
+            }catch (PDOException $e){
+                $err2=$e->getMessage();
+            }
+        }
+    
+        // Create div for toast animation and javascript
+        if($emailMsg4 != ""){
+            echo "<div id='emailMsg4'><div>";
+        }
+        if($emailMsg5 != ""){
+            echo "<div id='emailMsg5'><div>";
+        }
+        if($emailMsg6 != ""){
+            echo "<div id='emailMsg6'><div>";
+        }
+        if($pwdMsg3 != ""){
+            echo "<div id='pwdMsg3'><div>";
+        }
+        if($pwdMsg4 != ""){
+            echo "<div id='pwdMsg4'><div>";
+        }
+        if($err2 != ""){
+            echo "<div id='err2'><div>";
+        }
+        
+    }
+    
+    ?>
 
     <script src="app.js"></script>
 </body>
