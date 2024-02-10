@@ -22,7 +22,35 @@
     let pwdMsg4 = document.getElementById('pwdMsg4');
     let loggedin = document.getElementById('loggedin');
     let loggedout = document.getElementById('loggedout');
-    let err2 = document.getElementById('err2');
+    let nameMsg1 = document.getElementById('nameMsg1');
+    let sIdMsg1 = document.getElementById('sIdMsg1');
+    let sIdMsg2 = document.getElementById('sIdMsg2');
+    let sIdMsg3 = document.getElementById('sIdMsg3');
+    let birthdayMsg1 = document.getElementById('birthdayMsg1');
+    let birthdayMsg2 = document.getElementById('birthdayMsg2');
+    let birthdayMsg3 = document.getElementById('birthdayMsg3');
+    let addressMsg1 = document.getElementById('addressMsg1');
+    let numberMsg1 = document.getElementById('numberMsg1');
+    let numberMsg2 = document.getElementById('numberMsg2');
+    let numberMsg3 = document.getElementById('numberMsg3');
+    let numberMsg4 = document.getElementById('numberMsg4');
+    let numberMsg5 = document.getElementById('numberMsg5');
+    let emailMsg7 = document.getElementById('emailMsg7');
+    let emailMsg8 = document.getElementById('emailMsg8');
+    let emailMsg9 = document.getElementById('emailMsg9');
+    let emailMsg10 = document.getElementById('emailMsg10');
+    let projectMsg1 = document.getElementById('projectMsg1');
+    let projectMsg2 = document.getElementById('projectMsg2');
+    let projectMsg3 = document.getElementById('projectMsg3');
+    let dateMsg01 = document.getElementById('dateMsg01');
+    let dateMsg02 = document.getElementById('dateMsg02');
+    let dateMsg03 = document.getElementById('dateMsg03');
+    let timeMsg1 = document.getElementById('timeMsg1');
+    let timeMsg2 = document.getElementById('timeMsg2');
+    let genderMsg01 = document.getElementById('genderMsg01');
+    let campusMsg01 = document.getElementById('campusMsg01');
+    let registerSuccess = document.getElementById('registerSuccess');
+    let dbErr1 = document.getElementById('dbErr1');
     
     function createToast(type, icon, title, text){
         let newToast = document.createElement('div');
@@ -207,7 +235,210 @@
         let text = 'You are loggedout successfully';
         createToast(type, icon, title, text);
     }
-    if(err2){
+    // if(err2){
+    //     let type = 'error';
+    //     let icon = 'fa-solid fa-circle-exclamation';
+    //     let title = 'Error!';
+    //     let text = 'Database error. Please contact admin';
+    //     createToast(type, icon, title, text);
+    // }
+    if(nameMsg1){
+        let type = 'error';
+        let icon = 'fa-solid fa-circle-exclamation';
+        let title = 'Error!';
+        let text = 'Student Name is required';
+        createToast(type, icon, title, text);
+    }
+    if(sIdMsg1){
+        let type = 'error';
+        let icon = 'fa-solid fa-circle-exclamation';
+        let title = 'Error!';
+        let text = 'Student ID is required';
+        createToast(type, icon, title, text);
+    }
+    if(sIdMsg2){
+        let type = 'error';
+        let icon = 'fa-solid fa-circle-exclamation';
+        let title = 'Error!';
+        let text = 'Student ID must be shorter than 8 characters';
+        createToast(type, icon, title, text);
+    }
+    if(sIdMsg3){
+        let type = 'error';
+        let icon = 'fa-solid fa-circle-exclamation';
+        let title = 'Error!';
+        let text = 'Your Student ID is already registered';
+        createToast(type, icon, title, text);
+    }
+    if(birthdayMsg1){
+        let type = 'error';
+        let icon = 'fa-solid fa-circle-exclamation';
+        let title = 'Error!';
+        let text = 'Birthday is required';
+        createToast(type, icon, title, text);
+    }
+    if(birthdayMsg2){
+        let type = 'error';
+        let icon = 'fa-solid fa-circle-exclamation';
+        let title = 'Error!';
+        let text = 'Invalid birthday format. Please use mm/dd/yyyy';
+        createToast(type, icon, title, text);
+    }
+    if(birthdayMsg3){
+        let type = 'error';
+        let icon = 'fa-solid fa-circle-exclamation';
+        let title = 'Error!';
+        let text = 'Invalid year format. Year must have exactly 4 characters';
+        createToast(type, icon, title, text);
+    }
+    if(addressMsg1){
+        let type = 'error';
+        let icon = 'fa-solid fa-circle-exclamation';
+        let title = 'Error!';
+        let text = 'Address is required';
+        createToast(type, icon, title, text);
+    }
+    if(numberMsg1){
+        let type = 'error';
+        let icon = 'fa-solid fa-circle-exclamation';
+        let title = 'Error!';
+        let text = 'Phone number is required';
+        createToast(type, icon, title, text);
+    }
+    if(numberMsg2){
+        let type = 'error';
+        let icon = 'fa-solid fa-circle-exclamation';
+        let title = 'Error!';
+        let text = 'Phone number must be contatin numbers';
+        createToast(type, icon, title, text);
+    }
+    if(numberMsg3){
+        let type = 'error';
+        let icon = 'fa-solid fa-circle-exclamation';
+        let title = 'Error!';
+        let text = 'Phone number must have 10 numbers. Please use 07XXXXXXXX format';
+        createToast(type, icon, title, text);
+    }
+    if(numberMsg4){
+        let type = 'error';
+        let icon = 'fa-solid fa-circle-exclamation';
+        let title = 'Error!';
+        let text = 'Whatsapp number must be contatin numbers';
+        createToast(type, icon, title, text);
+    }
+    if(numberMsg5){
+        let type = 'error';
+        let icon = 'fa-solid fa-circle-exclamation';
+        let title = 'Error!';
+        let text = 'Whatsapp number must have 10 numbers. Please use 07XXXXXXXX format';
+        createToast(type, icon, title, text);
+    }
+    if(emailMsg7){
+        let type = 'error';
+        let icon = 'fa-solid fa-circle-exclamation';
+        let title = 'Error!';
+        let text = 'Email is required';
+        createToast(type, icon, title, text);
+    }
+    if(emailMsg8){
+        let type = 'error';
+        let icon = 'fa-solid fa-circle-exclamation';
+        let title = 'Error!';
+        let text = 'Your email is still empty. Please type your email correctly';
+        createToast(type, icon, title, text);
+    }
+    if(emailMsg9){
+        let type = 'error';
+        let icon = 'fa-solid fa-circle-exclamation';
+        let title = 'Error!';
+        let text = 'Email address is not valid';
+        createToast(type, icon, title, text);
+    }
+    if(emailMsg10){
+        let type = 'error';
+        let icon = 'fa-solid fa-circle-exclamation';
+        let title = 'Error!';
+        let text = 'Your email is already registered';
+        createToast(type, icon, title, text);
+    }
+    if(projectMsg1){
+        let type = 'error';
+        let icon = 'fa-solid fa-circle-exclamation';
+        let title = 'Error!';
+        let text = 'Completed project count is required';
+        createToast(type, icon, title, text);
+    }
+    if(projectMsg2){
+        let type = 'error';
+        let icon = 'fa-solid fa-circle-exclamation';
+        let title = 'Error!';
+        let text = 'Project count must be a number';
+        createToast(type, icon, title, text);
+    }
+    if(projectMsg3){
+        let type = 'error';
+        let icon = 'fa-solid fa-circle-exclamation';
+        let title = 'Error!';
+        let text = 'Please enter valid project count';
+        createToast(type, icon, title, text);
+    }
+    if(dateMsg01){
+        let type = 'error';
+        let icon = 'fa-solid fa-circle-exclamation';
+        let title = 'Error!';
+        let text = 'Day 01 is required';
+        createToast(type, icon, title, text);
+    }
+    if(dateMsg02){
+        let type = 'error';
+        let icon = 'fa-solid fa-circle-exclamation';
+        let title = 'Error!';
+        let text = 'Please select different 03 days';
+        createToast(type, icon, title, text);
+    }
+    if(dateMsg03){
+        let type = 'error';
+        let icon = 'fa-solid fa-circle-exclamation';
+        let title = 'Error!';
+        let text = 'Please Choose Day 01';
+        createToast(type, icon, title, text);
+    }
+    if(timeMsg1){
+        let type = 'error';
+        let icon = 'fa-solid fa-circle-exclamation';
+        let title = 'Error!';
+        let text = 'Time 01 is required';
+        createToast(type, icon, title, text);
+    }
+    if(timeMsg2){
+        let type = 'error';
+        let icon = 'fa-solid fa-circle-exclamation';
+        let title = 'Error!';
+        let text = 'Please choose time 01';
+        createToast(type, icon, title, text);
+    }
+    if(genderMsg01){
+        let type = 'error';
+        let icon = 'fa-solid fa-circle-exclamation';
+        let title = 'Error!';
+        let text = 'Gender is required';
+        createToast(type, icon, title, text);
+    }
+    if(campusMsg01){
+        let type = 'error';
+        let icon = 'fa-solid fa-circle-exclamation';
+        let title = 'Error!';
+        let text = 'Please choose your campus';
+        createToast(type, icon, title, text);
+    }
+    if(registerSuccess){
+        let type = 'success';
+        let icon = 'fa-solid fa-circle-check';
+        let title = 'Success!';
+        let text = 'Student registered successfully';
+        createToast(type, icon, title, text);
+    }
+    if(dbErr1){
         let type = 'error';
         let icon = 'fa-solid fa-circle-exclamation';
         let title = 'Error!';

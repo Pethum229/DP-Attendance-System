@@ -60,7 +60,7 @@ if(isset($_POST['submit'])){
                     header("location:login.php?registered");
                     exit;
                 }else{
-                    $dbErr = "Something went wrong! Please contact website admin";
+                    $dbErr1= "Something went wrong! Please contact website admin";
                 }
             }
         }catch(PDOException $e){
@@ -107,6 +107,7 @@ if(isset($_POST['submit'])){
 <?php include "inc_header.php"; ?>
     <title>Register</title>
     <link rel="stylesheet" href="toast.css">
+    <link rel="stylesheet" href="../toast.css">
     <style>
     body {
       background-color: #0d1117; /* Adjust the background color */
