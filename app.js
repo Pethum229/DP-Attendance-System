@@ -20,7 +20,7 @@
     let emailMsg6 = document.getElementById('emailMsg6');
     let pwdMsg3 = document.getElementById('pwdMsg3');
     let pwdMsg4 = document.getElementById('pwdMsg4');
-    let loginSuccess = document.getElementById('loginSuccess');
+    let loggedin = document.getElementById('loggedin');
     let loggedout = document.getElementById('loggedout');
     let err2 = document.getElementById('err2');
     
@@ -193,7 +193,7 @@
         let text = 'Password you entered is incorrect';
         createToast(type, icon, title, text);
     }
-    if(loginSuccess){
+    if(loggedin){
         let type = 'success';
         let icon = 'fa-solid fa-circle-check';
         let title = 'Success!';

@@ -139,7 +139,7 @@
                             // $_SESSION['id']=$result['CampusId'];
                         
                             // Redirect to homepage
-                            header("location:AdminPortal/dashboard.php");
+                            header("location:AdminPortal/dashboard.php?loggedin=1");
                         
                         }else $pwdMsg4 = "Password you entered is incorrect";
                     }

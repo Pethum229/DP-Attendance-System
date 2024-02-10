@@ -1,4 +1,4 @@
-<?php include "layout.php"; $_SESSION['name']; ?>
+<?php include "layout.php";?>
 <title>Dashboard | Admin Portal</title>
 <style>
     .cardBox{
@@ -185,13 +185,109 @@
         color:#CD7F32;
         position: relative;
     }
+
+
+    /* Toast Notifications */
+
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+    .notifications{
+     font-family: 'Poppins', sans-serif;
+     position: fixed;
+     top: 30px;
+     right: 20px;
+    }
+    .toast{
+        position: relative;
+        padding: 10px;
+        color: #fff;
+        margin-bottom: 10px;
+        width: 400px;
+        display: grid;
+        grid-template-columns: 70px 1fr 70px;
+        border-radius: 5px;
+        --color: #0abf30;
+        background-image: 
+            linear-gradient(
+                to right, #0abf3055, #22242f 30%
+            ); 
+        animation: show 0.3s ease 1 forwards  
+    }
+    .toast i{
+        color: var(--color);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: x-large;
+    }
+    .toast .title{
+        font-size: x-large;
+        font-weight: bold;
+    }
+    .toast span, .toast i:nth-child(3){
+        color: #fff;
+        opacity: 0.6;
+    }
+    @keyframes show{
+        0%{
+            transform: translateX(100%);
+        }
+        40%{
+            transform: translateX(-5%);
+        }
+        80%{
+            transform: translateX(0%);
+        }
+        100%{
+            transform: translateX(-10%);
+        }
+    }
+    .toast::before{
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        background-color: var(--color);
+        width: 100%;
+        height: 3px;
+        content: '';
+        box-shadow: 0 0 10px var(--color);
+        animation: timeOut 5s linear 1 forwards
+    }
+    @keyframes timeOut{
+        to{
+            width: 0;
+        }
+    }
+    .toast.error{
+        --color: #f24d4c;
+        background-image: 
+            linear-gradient(
+                to right, #f24d4c55, #22242F 30%
+            );
+    }
+    .toast.warning{
+        --color: #e9bd0c;
+        background-image: 
+            linear-gradient(
+                to right, #e9bd0c55, #22242F 30%
+            );
+    }
+    .toast.info{
+        --color: #3498db;
+        background-image: 
+            linear-gradient(
+                to right, #3498db55, #22242F 30%
+            );
+    }
+
     </style>
 
-    <?php
+    <?php               
         if(isset($_GET['loggedin'])){
-            echo "<div id='loginSuccess'></div>";
+            echo "<div id='loggedin'></div>";
         }
     ?>
+
 
     <?php
 
@@ -349,5 +445,9 @@
 
         </div>
     </div>
+
+    <div class="notifications"></div>
+
+    <script src="../app.js"></script>
 </body>
 </html>
