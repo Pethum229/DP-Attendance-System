@@ -16,7 +16,7 @@ try{
     $check->execute(array('00000'));
     $affectedRows = $check->rowCount();
 
-    echo "Updated $affectedRows rows successfully";
+    $_SESSION['check'] = $affectedRows;
 
     header("location:dashboard.php?checked=$affectedRows");
 

@@ -65,13 +65,15 @@ try{
         $updateAttendanceStatus->execute();
     }
 
-    echo "Not attended students status updated successfully";
+    // echo "Not attended students status updated successfully";
 ;
     // Delete all rows of daily_time_table
     $deleteAllRows = $db->prepare("DELETE FROM `daily_time_tables`");
     $deleteAllRows -> execute();
 
-    echo "All records deleted successfully<br>";
+    $notAttended = $deleteAllRows->rowCount();
+
+    // echo "All records deleted successfully<br>";
 
     // Insert selected data from time_tables table to daily_time_table
     $timeTable = $db->prepare("INSERT INTO `daily_time_tables` (`StudentID`,`DateNTime`)
@@ -112,7 +114,11 @@ try{
                                                                     SET tt.`Count` = tt.`Count`+1");
     $countUpdate -> execute();
 
-    echo "Time table count updated successfully<br>";
+    // echo "Time table count updated successfully<br>";
+
+    $_SESSION['timetable'] = $notAttended;
+
+    header("location:dashboard.php?notAttended=$notAttended");
 
 } catch (Exception $e) {
     echo "Error: " . $e->getMessage();

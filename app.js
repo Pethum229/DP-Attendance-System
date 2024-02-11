@@ -58,6 +58,8 @@
     let pwdMsg10 = document.getElementById('pwdMsg10');
     let pwdUpdate = document.getElementById('pwdUpdate');
     let forgotPwd = document.getElementById('forgotPwd');
+    let chkStudents = document.getElementById('chkStudents');
+    let timetable = document.getElementById('timetable');
     
     function createToast(type, icon, title, text){
         let newToast = document.createElement('div');
@@ -500,6 +502,20 @@
         let title = 'Success!';
         let text = 'Password Changed Successfully';
         createToast(type, icon, title, text);
+    }
+    if(chkStudents){        
+        let type = 'info';
+        let icon = 'fa-solid fa-circle-check';
+        let title = 'Successfully Checked!';
+        let text = 'Successfully removed unattended students.';
+        createToast(type, icon, title, text)
+    }
+    if(timetable){        
+        let type = 'info';
+        let icon = 'fa-solid fa-circle-check';
+        let title = 'Successfully Created!';
+        let text = 'Not attended students status updated.<br>Yesterday Time Table Deleted.<br>Today time table created.<br>Student day count updated.';
+        createToast(type, icon, title, text)
     }
     forgotPwd.addEventListener("click",function(){
         let type = 'info';

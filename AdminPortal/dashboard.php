@@ -7,6 +7,22 @@
         exit();
     }
 
+    if(isset($_SESSION['check'])){
+        echo "<div id='chkStudents'></div>";
+    }elseif(isset($_SESSION['timetable'])){
+        echo "<div id='timetable'></div>";
+    }
+    
+    if(isset($_SESSION['check']) || isset($_SESSION['timetable'])){
+        echo "<script>
+                setTimeout(function() {
+                    var xhttp = new XMLHttpRequest();
+                    xhttp.open('GET', 'session_unset.php', true);
+                    xhttp.send();
+                }, 5000);
+              </script>";
+    }
+
 ?>
 <title>Dashboard | Admin Portal</title>
 <style>
