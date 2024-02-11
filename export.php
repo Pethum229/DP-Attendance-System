@@ -1,4 +1,12 @@
 <?php
+
+    session_start();
+
+    if(!isset($_SESSION['name'])){
+        header("location:../login.php");
+        exit();
+    }
+
     include "db_connection.php";
 
     $filename ='AttendanceRecord-'.date('Y-m-d').'.csv';

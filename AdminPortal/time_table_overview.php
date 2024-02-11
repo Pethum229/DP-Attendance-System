@@ -1,4 +1,14 @@
-<?php include "layout.php" ?>
+<?php
+
+include "layout.php" ;
+
+if(!isset($_SESSION['name'])){
+    header("location:../login.php");
+    exit();
+}
+
+
+?>
 <style>
         *{
         margin:0;

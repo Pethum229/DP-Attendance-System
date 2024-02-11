@@ -1,4 +1,13 @@
-<?php include "layout.php"; ?>
+<?php 
+
+    include "layout.php"; 
+
+    if(!isset($_SESSION['name'])){
+        header("location:../login.php");
+        exit();
+    }
+
+?>
     <title>Daily Attendance | Admin Portal of DP Attendance System</title>
     <style>
         *{

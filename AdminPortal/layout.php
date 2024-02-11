@@ -1,4 +1,13 @@
-<?php include "../inc_header.php";?>
+<?php 
+
+include "../inc_header.php";
+
+if(!isset($_SESSION['name'])){
+    header("location:../login.php");
+    exit();
+}
+
+?>
     <title>Admin Portal</title>
     <link rel="stylesheet" href="layout.css">
 </head>

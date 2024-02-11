@@ -1,5 +1,12 @@
 <?php
+
 include "layout.php";
+
+if(!isset($_SESSION['name'])){
+    header("location:../login.php");
+    exit();
+}
+
 
 if (isset($_POST['submit'])){  
     

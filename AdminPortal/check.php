@@ -1,5 +1,13 @@
 <?php
 
+    session_start();
+
+    if(!isset($_SESSION['name'])){
+        header("location:../login.php");
+        exit();
+    }
+
+
 try{
     // Connct Database
     include "../db_connection.php";
