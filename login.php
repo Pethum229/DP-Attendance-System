@@ -95,7 +95,7 @@
         </form>
         <div class="footer">
             <p>You haven't account ? <a href="register.php">Register</a></p>
-            <a href="#">Forgot Password</a>
+            <a id="forgotPwd" href="#">Forgot Password</a>
         </div>
     </section>
 

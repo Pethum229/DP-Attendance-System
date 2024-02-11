@@ -270,7 +270,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #1C1D22;
+            background-color: #0d1117;
         }
         button{
             padding: 10px;

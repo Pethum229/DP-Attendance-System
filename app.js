@@ -50,7 +50,14 @@
     let genderMsg01 = document.getElementById('genderMsg01');
     let campusMsg01 = document.getElementById('campusMsg01');
     let registerSuccess = document.getElementById('registerSuccess');
-    let dbErr1 = document.getElementById('dbErr1');
+    let pwdMsg5 = document.getElementById('pwdMsg5');
+    let pwdMsg6 = document.getElementById('pwdMsg6');
+    let pwdMsg7 = document.getElementById('pwdMsg7');
+    let pwdMsg8 = document.getElementById('pwdMsg8');
+    let pwdMsg9 = document.getElementById('pwdMsg9');
+    let pwdMsg10 = document.getElementById('pwdMsg10');
+    let pwdUpdate = document.getElementById('pwdUpdate');
+    let forgotPwd = document.getElementById('forgotPwd');
     
     function createToast(type, icon, title, text){
         let newToast = document.createElement('div');
@@ -438,10 +445,66 @@
         let text = 'Student registered successfully';
         createToast(type, icon, title, text);
     }
-    if(dbErr1){
+    // if(dbErr1){
+    //     let type = 'error';
+    //     let icon = 'fa-solid fa-circle-exclamation';
+    //     let title = 'Error!';
+    //     let text = 'Database error. Please contact admin';
+    //     createToast(type, icon, title, text);
+    // }
+    if(pwdMsg5){
+        let type = 'error';
+        let icon = 'fa-solid fa-circle-exclamation';
+        let title = 'Error!';
+        let text = 'Current Password and New Password are required';
+        createToast(type, icon, title, text);
+    }
+    if(pwdMsg6){
+        let type = 'error';
+        let icon = 'fa-solid fa-circle-exclamation';
+        let title = 'Error!';
+        let text = 'New Password do not match';
+        createToast(type, icon, title, text);
+    }
+    if(pwdMsg7){
+        let type = 'error';
+        let icon = 'fa-solid fa-circle-exclamation';
+        let title = 'Error!';
+        let text = 'Error Selecting username related to password! Please contact admin';
+        createToast(type, icon, title, text);
+    }
+    if(pwdMsg8){
+        let type = 'error';
+        let icon = 'fa-solid fa-circle-exclamation';
+        let title = 'Error!';
+        let text = 'Your current password is wrong';
+        createToast(type, icon, title, text);
+    }
+    if(pwdMsg9){
+        let type = 'error';
+        let icon = 'fa-solid fa-circle-exclamation';
+        let title = 'Error!';
+        let text = 'Password change error! Please contact admin';
+        createToast(type, icon, title, text);
+    }
+    if(pwdMsg10){
         let type = 'error';
         let icon = 'fa-solid fa-circle-exclamation';
         let title = 'Error!';
         let text = 'Database error. Please contact admin';
         createToast(type, icon, title, text);
     }
+    if(pwdUpdate){
+        let type = 'success';
+        let icon = 'fa-solid fa-circle-check';
+        let title = 'Success!';
+        let text = 'Password Changed Successfully';
+        createToast(type, icon, title, text);
+    }
+    forgotPwd.addEventListener("click",function(){
+        let type = 'info';
+        let icon = 'fa-solid fa-circle-check';
+        let title = 'Forgot Password?';
+        let text = 'This feature not enabled to useres yet. Please contact admin.';
+        createToast(type, icon, title, text);
+    })
