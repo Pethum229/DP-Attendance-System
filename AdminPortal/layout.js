@@ -8,12 +8,18 @@ toggle.onclick = function() {
     main.classList.toggle('active');
 }
 
-// Add 'hovered' class to the selected list item
-let list = document.querySelectorAll('.navigation li');
-
-function activeLink() {
-    list.forEach((item) => item.classList.remove('hovered'));
+// Function to handle setting active link
+function setActiveLink() {
+    // Remove 'hovered' class from all list items
+    document.querySelectorAll('.navigation li').forEach(item => {
+        item.classList.remove('hovered');
+    });
+    
+    // Add 'hovered' class to the clicked list item
     this.classList.add('hovered');
 }
 
-list.forEach((item) => item.addEventListener('click', activeLink));
+// Add event listener to each list item
+document.querySelectorAll('.navigation li').forEach(item => {
+    item.addEventListener('click', setActiveLink);
+});

@@ -1,5 +1,5 @@
 <?php 
-
+    $page_id=4;
     include "layout.php"; 
 
     if(!isset($_SESSION['name'])){
