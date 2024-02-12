@@ -3,8 +3,8 @@
 include "../inc_header.php";
 
 // Debugging: Output session variables to check their values
-var_dump($_SESSION['button_clicked_date']);
-var_dump($_SESSION['button_disabled']);
+// var_dump($_SESSION['button_clicked_date']);
+// var_dump($_SESSION['button_disabled']);
 
 if(!isset($_SESSION['name'])){
     header("location:../login.php");
@@ -18,11 +18,11 @@ $buttonClickedToday = isset($_SESSION['button_clicked_date']) && $_SESSION['butt
 $buttonDisabled = isset($_SESSION['button_disabled']) && $_SESSION['button_disabled'];
 
 // Debugging: Output the current date to see if it matches with the stored date
-echo "Current Date: " . date('Y-m-d');
+// echo "Current Date: " . date('Y-m-d');
 
 // Debugging: Output the button state variables
-echo "Button Clicked Today: " . ($buttonClickedToday ? 'Yes' : 'No');
-echo "Button Disabled: " . ($buttonDisabled ? 'Yes' : 'No');
+// echo "Button Clicked Today: " . ($buttonClickedToday ? 'Yes' : 'No');
+// echo "Button Disabled: " . ($buttonDisabled ? 'Yes' : 'No');
 
 // Check if the button should be clickable
 $buttonClickable = !$buttonClickedToday || ($buttonClickedToday && !$buttonDisabled);
@@ -173,6 +173,7 @@ if (isset($_POST['click_button'])) {
                 </div>
             </div>
 
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="layout.js"></script>
