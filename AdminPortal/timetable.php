@@ -114,7 +114,7 @@ try{
                                                                     SET tt.`Count` = tt.`Count`+1");
     $countUpdate -> execute();
 
-    // echo "Time table count updated successfully<br>";
+    echo "Time table count updated successfully<br>";
 
     $_SESSION['timetable'] = $notAttended;
 
