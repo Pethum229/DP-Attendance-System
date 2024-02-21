@@ -2,10 +2,10 @@
     $page_id=20;
     include "layout.php"; 
 
-    if(!isset($_SESSION['name'])){
-        header("location:../login.php");
-        exit();
-    }
+    // if(!isset($_SESSION['name'])){
+    //     header("location:../login.php");
+    //     exit();
+    // }
     
  ?>
 <title>View Students | Admin Portal</title>
@@ -364,7 +364,7 @@ if (isset($_POST['submit'])){
     elseif($_POST['time01'] == '0') $timeMsg2 = "Please Choose Time 01";
 
     // Gender Validation
-    if(empty($_POST['gender'])) $genderMsg01 = "Gender is required";
+    if(!isset($_POST['gender'])) $genderMsg01 = "Gender is required";
 
     // Campus Validation
     if(empty($_POST['cName']) || $_POST['cName']=='0') $campusMsg01 = "Please choose your campus";
@@ -413,35 +413,35 @@ if (isset($_POST['submit'])){
                                                     $_POST['cName'],
                                                     $_GET['studentId']
                                                 ));
-
-                $updateSuccess = "Student details updated successfully";
-                
-                if($updateSuccess){                    
+                                   
                     // Update Existing data records from time_table table's date to 0
                     $stmtUpdate = $db->prepare("UPDATE `time_tables` SET `DateAndTime` = ?, `StudentID`=? WHERE `StudentID`=?");
-                    $stmtUpdate->execute(array('00', $_POST['sName'],$studentId));
-                    echo "Tick";
+                    $stmtUpdate->execute(array('00', $_POST['sId'],$studentId));
                     
                     // Insert data into time_tables table
-                    $stmt_time_tables = $db->prepare("UPDATE `time_tables` SET `DateAndTime`=? WHERE `StudentID`=? AND `DateAndTime`=?");
+                    $stmt_time_tables = $db->prepare("UPDATE `time_tables` SET `DateAndTime`=? WHERE `StudentID`=? AND `DateAndTime`=? LIMIT 1");
                     
                     // Insert date for date and time 01
-                    $stmt_time_tables->execute([$_POST['date01']. '' . $_POST['time01'], $_POST['sName'], '00']);
+                    $stmt_time_tables->execute([$_POST['date01']. '' . $_POST['time01'], $_POST['sId'], '00']);
                     
                     // Reset the prepared statement
-                    $stmt_time_tables->closeCursor();
+                    // $stmt_time_tables->closeCursor();
                     
                     // Insert date for date and time 02
-                    $stmt_time_tables->execute([$_POST['date02']. '' . $_POST['time02'], $_POST['sName'], '00']);
+                    $stmt_time_tables->execute([$_POST['date02']. '' . $_POST['time02'], $_POST['sId'], '00']);
                     
                     // Reset the prepared statement
-                    $stmt_time_tables->closeCursor();
+                    // $stmt_time_tables->closeCursor();
                     
                     // Insert date for date and time 03
-                    $stmt_time_tables->execute([$_POST['date03']. '' . $_POST['time03'], $_POST['sName'], '00']);
-                    
-                    echo "Date added successfully!";
-                }
+                    $stmt_time_tables->execute([$_POST['date03']. '' . $_POST['time03'], $_POST['sId'], '00']);
+
+                    if (($stmtStudents->rowCount() > 0) || ($stmt_time_tables->rowCount() > 0)){
+
+                        $updateSuccess = "Student details updated successfully";
+                        header("location:edit.php?studentId=".$_POST['sId']);
+                        exit();
+                    }
                 
             }                                        
         }catch(PDOException $e){
@@ -705,13 +705,13 @@ if (!empty($_GET['studentId'])) {
                 <div class="genders">
                     <div class="genderSelect">
                         <label for="male">Male</label>
-                        <input <?php if($gender==1) echo"checked" ?> id="male" type="radio" name="gender" value="1">
+                        <input <?php if($gender == 1) echo "checked" ?> id="male" type="radio" name="gender" value="1">
                     </div>
                     <div class="genderSelect">
                         <label for="female">Female</label>
-                        <input <?php if($gender==0) echo"checked" ?> id="female" type="radio" name="gender" value="0">
+                        <input <?php if($gender == 0) echo "checked" ?> id="female" type="radio" name="gender" value="0">
                     </div>
-                </div> 
+                </div>
             </div>
 
             <select required name="cName" id="campusName">
