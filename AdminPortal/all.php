@@ -9,7 +9,7 @@
     
  ?>
 <title>Registered Students | Admin Portal</title>
-    <title>All Students</title>
+
     <style>
         .filters{
             display:flex;
@@ -118,8 +118,10 @@
         </style>
 </head>
 <body>
-<section class="sTable">
-        <div class="row">
+
+<!-- Table & Filters -->
+    <section class="sTable">
+        <div class="rows">
             <div class="filters">
                 <form>
                     <select name="rows" id="rows">
@@ -144,17 +146,18 @@
 
                     // Function for displaying records
                     function displayRecords($row){
+                        $studentId = $row['StudentID'];
                         echo "<tr>";
                         echo "<td>" . $row['Id'] . "</td>";
-                        echo "<td>" . $row['StudentID'] . "</td>";
+                        echo "<td class='userId'>" . $row['StudentID'] . "</td>";
                         echo "<td>" . $row['StudentName'] . "</td>";
                         echo "<td>" . $row['PhoneNumber'] . "</td>";
                         echo "<td>" . $row['ProjectsCompleted'] . "</td>";
                         echo "<td>";
                         echo "<div class='action'>";
-                        echo "<a href=''><ion-icon name='eye-outline'></ion-icon></a>";
-                        echo "<a href=''><ion-icon style='color:green' name='create-outline'></ion-icon></a>";
-                        echo "<a href=''><ion-icon style='color:red' name='trash-outline'></ion-icon></a>";
+                        echo "<a href='view.php?studentId=$studentId' class='viewData'><ion-icon name='eye-outline'></ion-icon></a>";
+                        echo "<a href='edit.php?studentId=$studentId'><ion-icon style='color:green' name='create-outline'></ion-icon></a>";
+                        echo "<a href='#'><ion-icon style='color:red' name='trash-outline'></ion-icon></a>";
                         echo "</div>";
                         echo "</td>";
                         echo "</tr>";
@@ -354,16 +357,6 @@
 
         document.getElementById('pCompleted').addEventListener('click', function() {
             toggleIcon('pCompleted');
-        });
-    </script>
-
-    <script>
-        $(document).ready(function(){
-            $('.viewData').click(function (e){
-                e.preventDefault();
-
-                console.log("Hello");
-            });
         });
     </script>
 

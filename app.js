@@ -60,6 +60,8 @@
     let forgotPwd = document.getElementById('forgotPwd');
     let chkStudents = document.getElementById('chkStudents');
     let timetable = document.getElementById('timetable');
+    let updateSuccess = document.getElementById('updateSuccess');
+
     
     function createToast(type, icon, title, text){
         let newToast = document.createElement('div');
@@ -516,6 +518,13 @@
         let title = 'Successfully Created!';
         let text = 'Not attended students status updated.<br>Yesterday Time Table Deleted.<br>Today time table created.<br>Student day count updated.';
         createToast(type, icon, title, text)
+    }
+    if(updateSuccess){
+        let type = 'success';
+        let icon = 'fa-solid fa-circle-check';
+        let title = 'Success!';
+        let text = 'Student details update successfully';
+        createToast(type, icon, title, text);
     }
     forgotPwd.addEventListener("click",function(){
         let type = 'info';

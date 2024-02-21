@@ -98,7 +98,7 @@
             border: 1px solid var(--blue);
             color: var(--blue);
         }
-        .actions a{
+        .action a{
             text-decoration:none;
         }
         .btnEnroll{
