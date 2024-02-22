@@ -44,6 +44,10 @@
                                                         END
                                                     WHERE `StudentID`=?");                                            
                 $attendanceUpdate -> execute(array($text));
+
+                // Increase Total Attendance of Students table
+                $attendanceIncrement = $db->prepare("UPDATE `students` SET `TotalAttendance` = `TotalAttendance` + 1 WHERE `StudentID` = ?");
+                $attendanceIncrement->execute(array($text));
     
                 // Delete detail from the daily_time_tables
                 $deleteDetails = $db->prepare("DELETE FROM `daily_time_tables` WHERE `StudentID`=?");
