@@ -61,6 +61,8 @@
     let chkStudents = document.getElementById('chkStudents');
     let timetable = document.getElementById('timetable');
     let updateSuccess = document.getElementById('updateSuccess');
+    let urlError = document.getElementById('urlError');
+    let deleteRec = document.getElementById('deleteRec');
 
     
     function createToast(type, icon, title, text){
@@ -524,6 +526,21 @@
         let icon = 'fa-solid fa-circle-check';
         let title = 'Success!';
         let text = 'Student details update successfully';
+        createToast(type, icon, title, text);
+    }
+    if(deleteRec){
+        console.log("Removed");
+        let type = 'success';
+        let icon = 'fa-solid fa-circle-check';
+        let title = 'Success!';
+        let text = 'Student removed successfully';
+        createToast(type, icon, title, text);
+    }
+    if(urlError){
+        let type = 'error';
+        let icon = 'fa-solid fa-circle-exclamation';
+        let title = 'Error!';
+        let text = 'Please input valid URL or Contact Admin';
         createToast(type, icon, title, text);
     }
     forgotPwd.addEventListener("click",function(){

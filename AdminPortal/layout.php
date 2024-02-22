@@ -6,10 +6,10 @@ include "../inc_header.php";
 // var_dump($_SESSION['button_clicked_date']);
 // var_dump($_SESSION['button_disabled']);
 
-if(!isset($_SESSION['name'])){
-    header("location:../login.php");
-    exit();
-}
+// if(!isset($_SESSION['name'])){
+//     header("location:../login.php");
+//     exit();
+// }
 
 // Check if the button was clicked today
 $buttonClickedToday = isset($_SESSION['button_clicked_date']) && $_SESSION['button_clicked_date'] === date('Y-m-d');

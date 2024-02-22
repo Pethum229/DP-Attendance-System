@@ -1,11 +1,293 @@
 <?php
     $page_id=20;
-    include "layout.php"; 
 
-    // if(!isset($_SESSION['name'])){
-    //     header("location:../login.php");
-    //     exit();
-    // }
+    // Varaible Declaration
+    $nameMsg1="";
+    $sIdMsg1="";
+    $sIdMsg2="";
+    $sIdMsg3="";
+    $birthdayMsg1="";
+    $birthdayMsg2="";
+    $birthdayMsg3="";
+    $addressMsg1="";
+    $numberMsg1="";
+    $numberMsg2="";
+    $numberMsg3="";
+    $numberMsg4="";
+    $numberMsg5="";
+    $emailMsg7="";
+    $emailMsg8="";
+    $emailMsg9="";
+    $emailMsg10="";
+    $projectMsg1="";
+    $projectMsg2="";
+    $projectMsg3="";
+    $dateMsg01="";
+    $dateMsg02="";
+    $dateMsg03="";
+    $timeMsg1="";
+    $timeMsg2="";
+    $genderMsg01="";
+    $campusMsg01="";
+    $updateSuccess = "";
+    $dbErr1="";
+    $urlError="";
+
+    // Form Validation and Database Operations
+    if (isset($_GET['studentId']) && !empty($_GET['studentId'])){
+        $studentId = $_GET['studentId'];
+    }else{
+        $urlError = "Invalid URL";
+    }
+
+    if (isset($_POST['submit'])){  
+
+        // Form Validation
+        // Student Name Validation
+        if(empty($_POST['sName'])) $nameMsg1="Student Name is Required";
+
+        // StudentID Validation
+        if(empty($_POST['sId'])) $sIdMsg1="Student ID is required";
+        elseif(strlen($_POST['sId'])>=8) $sIdMsg2="Student ID must be shorter than 8 characters";
+
+        // Birthday Validation
+        $birthday = $_POST['birthday'];
+
+        if(empty($birthday)) $birthdayMsg1="Birthday is required";
+        else{
+            $dateObj = DateTime::createFromFormat('Y-m-d',$birthday);
+
+            if(!$dateObj){
+                $birthdayMsg2 = "Invalid birthday format. Please use mm/dd/yyyy";
+            }else{
+                $year = $dateObj->format('Y');
+                if(strlen($year) !==4){
+                    $birthdayMsg3 = "Invalid year format. Year must have exactly 4 characters";
+                }
+            }
+        }
+
+        // Address Validation
+        if(empty($_POST['address'])) $addressMsg1 = "Address is required";
+
+        //Phone Number Validation
+        if(empty($_POST['pNumber'])) $numberMsg1 = "Phone number is required";
+        elseif(!is_numeric($_POST['pNumber'])) $numberMsg2 = "Phone number must be contain numbers";
+        elseif(strlen($_POST['pNumber']) != 10) $numberMsg3 = "Phone number must have 10 numbers. Please use 07XXXXXXXX format";
+
+        // Whatsapp Number Validation
+        if(!is_numeric($_POST['wNumber'])) $numberMsg4 = "Whatsapp number must be contain numbers";
+        elseif(strlen($_POST['wNumber']) != 10) $numberMsg5 = "Whatsapp number must have 10 numbers. Please use 07XXXXXXXX format";
+
+        // Email Validation
+        if(!empty($_POST['email'])){
+            $_POST['email'] = trim($_POST['email']);
+            if (empty($_POST['email'])) $emailMsg8 = "Your email is still empty. Please type your email correctly";
+            elseif (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) $emailMsg9 = "Email address is not valid";
+        }else{
+            $emailMsg7 = "Email is required";
+        }
+
+        // Completed Projects Validation
+        if(empty($_POST['cProjects'])) $projectMsg1 = "Completed project count is required";
+        elseif(!is_numeric($_POST['cProjects'])) $projectMsg2 = "Project count must be a number";
+        elseif($_POST['cProjects'] >= 321) $projectMsg3 = "Please enter valid project count";
+
+        // Date Validation
+
+        if(empty($_POST['date01'])) $dateMsg01 = "Day 01 is required";
+        elseif($_POST['date01'] == $_POST['date02'] || $_POST['date01'] == $_POST['date03'] || $_POST['date02'] == $_POST['date03']) $dateMsg02 = "Please select different 03 days";
+        elseif($_POST['date01'] == '0') $dateMsg03 = "Please Choose Day 01";
+
+        if(empty($_POST['time01'])) $timeMsg1 = "Time 01 is required";
+        elseif($_POST['time01'] == '0') $timeMsg2 = "Please Choose Time 01";
+
+        // Gender Validation
+        if(!isset($_POST['gender'])) $genderMsg01 = "Gender is required";
+
+        // Campus Validation
+        if(empty($_POST['cName']) || $_POST['cName']=='0') $campusMsg01 = "Please choose your campus";
+
+        // Database Operations
+        if(empty($nameMsg1) && empty($sIdMsg1) && empty($sIdMsg2) && empty($birthdayMsg1) && empty($birthdayMsg2) && empty($birthdayMsg3) && empty($addressMsg1) && empty($numberMsg1) && empty($numberMsg2) && empty($numberMsg3) && empty($numberMsg4) && empty($numberMsg5) && empty($emailMsg7) && empty($emailMsg8) && empty($emailMsg9) && empty($projectMsg1) && empty($projectMsg2) && empty($projectMsg3) && empty($dateMsg01) && empty($dateMsg02) && empty($dateMsg03) && empty($timeMsg1) && empty($timeMsg2) && empty($genderMsg01) && empty($campusMsg01)){
+            try{
+                include "../db_connection.php";
+
+                // Check StudentId is already registerd
+                $checksId = $db->prepare("SELECT `StudentID` FROM `students` WHERE `StudentID`=?");
+                $checksId->execute(array($_POST['sId']));
+                $sIdCheck = $checksId->fetch(PDO::FETCH_ASSOC);
+
+                // Check email is already registerd
+                $checkEmail = $db->prepare("SELECT `Email` FROM `students` WHERE `Email`=?");
+                $checkEmail->execute(array($_POST['email']));
+                $emailCheck = $checkEmail->fetch(PDO::FETCH_ASSOC);
+
+                if ($checksId->rowCount()>0 && $sIdCheck['StudentID'] != $_POST['sId']) $sIdMsg3 = "Your Student ID is already registered";
+                elseif ($checkEmail->rowCount()>0 && $emailCheck['Email'] != $_POST['email']) $emailMsg10 = "Your Email is already registered";
+                else{
+                    // Update data in students table
+                    $stmtStudents = $db->prepare("UPDATE `students` SET 
+                                    `StudentID` = ?,
+                                    `StudentName` = ?,
+                                    `Address` = ?,
+                                    `PhoneNumber` = ?,
+                                    `WhatsappNumber` = ?,
+                                    `Birthday` = ?,
+                                    `Email` = ?,
+                                    `ProjectsCompleted` = ?,
+                                    `Gender` = ?,
+                                    `CampusId` = ?
+                                            WHERE `StudentID` = ?");
+                                                    $stmtStudents->execute(array(
+                                                        $_POST['sId'],
+                                                        $_POST['sName'],
+                                                        $_POST['address'],
+                                                        $_POST['pNumber'],
+                                                        $_POST['wNumber'],
+                                                        $_POST['birthday'],
+                                                        $_POST['email'],
+                                                        $_POST['cProjects'],
+                                                        $_POST['gender'],
+                                                        $_POST['cName'],
+                                                        $_GET['studentId']
+                                                    ));
+                                                
+                        // Update Existing data records from time_table table's date to 0
+                        $stmtUpdate = $db->prepare("UPDATE `time_tables` SET `DateAndTime` = ?, `StudentID`=? WHERE `StudentID`=?");
+                        $stmtUpdate->execute(array('00', $_POST['sId'],$studentId));
+                                                
+                        // Insert data into time_tables table
+                        $stmt_time_tables = $db->prepare("UPDATE `time_tables` SET `DateAndTime`=? WHERE `StudentID`=? AND `DateAndTime`=? LIMIT 1");
+                                                
+                        // Insert date for date and time 01
+                        $stmt_time_tables->execute([$_POST['date01']. '' . $_POST['time01'], $_POST['sId'], '00']);
+                                                
+                        // Reset the prepared statement
+                        // $stmt_time_tables->closeCursor();
+                                                
+                        // Insert date for date and time 02
+                        $stmt_time_tables->execute([$_POST['date02']. '' . $_POST['time02'], $_POST['sId'], '00']);
+                                                
+                        // Reset the prepared statement
+                        // $stmt_time_tables->closeCursor();
+                                                
+                        // Insert date for date and time 03
+                        $stmt_time_tables->execute([$_POST['date03']. '' . $_POST['time03'], $_POST['sId'], '00']);
+
+                        if (($stmtStudents->rowCount() > 0) || ($stmt_time_tables->rowCount() > 0)){
+
+                            $updateSuccess = "Student details updated successfully";
+                            header("location:edit.php?studentId=".$_POST['sId']);
+                        }
+                    
+                }                                        
+            }catch(PDOException $e){
+                $dbErr1=$e->getMessage();
+            }
+
+        }
+
+        // Create div for toast animation and javascript
+        if($nameMsg1 != ""){
+            echo "<div id='nameMsg1'><div>";
+        }
+        if($sIdMsg1 != ""){
+            echo "<div id='sIdMsg1'><div>";
+        }
+        if($sIdMsg2 != ""){
+            echo "<div id='sIdMsg2'><div>";
+        }
+        if($sIdMsg3 != ""){
+            echo "<div id='sIdMsg3'><div>";
+        }
+        if($birthdayMsg1 != ""){
+            echo "<div id='birthdayMsg1'><div>";
+        }
+        if($birthdayMsg2 != ""){
+            echo "<div id='birthdayMsg2'><div>";
+        }
+        if($birthdayMsg3 != ""){
+            echo "<div id='birthdayMsg3'><div>";
+        }
+        if($addressMsg1 != ""){
+            echo "<div id='addressMsg1'><div>";
+        }
+        if($numberMsg1 != ""){
+            echo "<div id='numberMsg1'><div>";
+        }
+        if($numberMsg2 != ""){
+            echo "<div id='numberMsg2'><div>";
+        }
+        if($numberMsg3 != ""){
+            echo "<div id='numberMsg3'><div>";
+        }
+        if($numberMsg4 != ""){
+            echo "<div id='numberMsg4'><div>";
+        }
+        if($numberMsg5 != ""){
+            echo "<div id='numberMsg5'><div>";
+        }
+        if($emailMsg7 != ""){
+            echo "<div id='emailMsg7'><div>";
+        }
+        if($emailMsg8 != ""){
+            echo "<div id='emailMsg8'><div>";
+        }
+        if($emailMsg9 != ""){
+            echo "<div id='emailMsg9'><div>";
+        }
+        if($emailMsg10 != ""){
+            echo "<div id='emailMsg10'><div>";
+        }
+        if($projectMsg1 != ""){
+            echo "<div id='projectMsg1'><div>";
+        }
+        if($projectMsg2 != ""){
+            echo "<div id='projectMsg2'><div>";
+        }
+        if($projectMsg3 != ""){
+            echo "<div id='projectMsg3'><div>";
+        }
+        if($dateMsg01 != ""){
+            echo "<div id='dateMsg01'><div>";
+        }
+        if($dateMsg02 != ""){
+            echo "<div id='dateMsg02'><div>";
+        }
+        if($dateMsg03 != ""){
+            echo "<div id='dateMsg03'><div>";
+        }
+        if($timeMsg1 != ""){
+            echo "<div id='timeMsg1'><div>";
+        }
+        if($timeMsg2 != ""){
+            echo "<div id='timeMsg2'><div>";
+        }
+        if($genderMsg01 != ""){
+            echo "<div id='genderMsg01'><div>";
+        }
+        if($campusMsg01 != ""){
+            echo "<div id='campusMsg01'><div>";
+        }
+        if($updateSuccess != ""){
+            echo "<div id='updateSuccess'><div>";
+        }
+        if($dbErr1 != ""){
+            echo "<div id='dbErr1'><div>";
+        }
+        if($urlError != ""){
+            echo "<div id='urlError'><div>";
+        }
+
+
+        // Check $_POST values
+        // echo "<pre>";
+        // var_dump($_POST);
+        // echo "</pre>";
+    }
+
+    include "layout.php";
     
  ?>
 <title>View Students | Admin Portal</title>
@@ -265,288 +547,6 @@
 </style>
 
 <body>
-
-<?php
-
-$studentId = $_GET['studentId'];
-
-if (isset($_POST['submit'])){  
-
-    // Varaible Declaration
-    $nameMsg1="";
-    $sIdMsg1="";
-    $sIdMsg2="";
-    $sIdMsg3="";
-    $birthdayMsg1="";
-    $birthdayMsg2="";
-    $birthdayMsg3="";
-    $addressMsg1="";
-    $numberMsg1="";
-    $numberMsg2="";
-    $numberMsg3="";
-    $numberMsg4="";
-    $numberMsg5="";
-    $emailMsg7="";
-    $emailMsg8="";
-    $emailMsg9="";
-    $emailMsg10="";
-    $projectMsg1="";
-    $projectMsg2="";
-    $projectMsg3="";
-    $dateMsg01="";
-    $dateMsg02="";
-    $dateMsg03="";
-    $timeMsg1="";
-    $timeMsg2="";
-    $genderMsg01="";
-    $campusMsg01="";
-    $updateSuccess = "";
-    $dbErr1="";
-
-    // Form Validation
-    // Student Name Validation
-    if(empty($_POST['sName'])) $nameMsg1="Student Name is Required";
-
-    // StudentID Validation
-    if(empty($_POST['sId'])) $sIdMsg1="Student ID is required";
-    elseif(strlen($_POST['sId'])>=8) $sIdMsg2="Student ID must be shorter than 8 characters";
-
-    // Birthday Validation
-    $birthday = $_POST['birthday'];
-
-    if(empty($birthday)) $birthdayMsg1="Birthday is required";
-    else{
-        $dateObj = DateTime::createFromFormat('Y-m-d',$birthday);
-
-        if(!$dateObj){
-            $birthdayMsg2 = "Invalid birthday format. Please use mm/dd/yyyy";
-        }else{
-            $year = $dateObj->format('Y');
-            if(strlen($year) !==4){
-                $birthdayMsg3 = "Invalid year format. Year must have exactly 4 characters";
-            }
-        }
-    }
-
-    // Address Validation
-    if(empty($_POST['address'])) $addressMsg1 = "Address is required";
-
-    //Phone Number Validation
-    if(empty($_POST['pNumber'])) $numberMsg1 = "Phone number is required";
-    elseif(!is_numeric($_POST['pNumber'])) $numberMsg2 = "Phone number must be contain numbers";
-    elseif(strlen($_POST['pNumber']) != 10) $numberMsg3 = "Phone number must have 10 numbers. Please use 07XXXXXXXX format";
-
-    // Whatsapp Number Validation
-    if(!is_numeric($_POST['wNumber'])) $numberMsg4 = "Whatsapp number must be contain numbers";
-    elseif(strlen($_POST['wNumber']) != 10) $numberMsg5 = "Whatsapp number must have 10 numbers. Please use 07XXXXXXXX format";
-
-    // Email Validation
-    if(!empty($_POST['email'])){
-        $_POST['email'] = trim($_POST['email']);
-        if (empty($_POST['email'])) $emailMsg8 = "Your email is still empty. Please type your email correctly";
-        elseif (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) $emailMsg9 = "Email address is not valid";
-    }else{
-        $emailMsg7 = "Email is required";
-    }
-
-    // Completed Projects Validation
-    if(empty($_POST['cProjects'])) $projectMsg1 = "Completed project count is required";
-    elseif(!is_numeric($_POST['cProjects'])) $projectMsg2 = "Project count must be a number";
-    elseif($_POST['cProjects'] >= 321) $projectMsg3 = "Please enter valid project count";
-
-    // Date Validation
-
-    if(empty($_POST['date01'])) $dateMsg01 = "Day 01 is required";
-    elseif($_POST['date01'] == $_POST['date02'] || $_POST['date01'] == $_POST['date03'] || $_POST['date02'] == $_POST['date03']) $dateMsg02 = "Please select different 03 days";
-    elseif($_POST['date01'] == '0') $dateMsg03 = "Please Choose Day 01";
-
-    if(empty($_POST['time01'])) $timeMsg1 = "Time 01 is required";
-    elseif($_POST['time01'] == '0') $timeMsg2 = "Please Choose Time 01";
-
-    // Gender Validation
-    if(!isset($_POST['gender'])) $genderMsg01 = "Gender is required";
-
-    // Campus Validation
-    if(empty($_POST['cName']) || $_POST['cName']=='0') $campusMsg01 = "Please choose your campus";
-
-    // Database Operations
-    if(empty($nameMsg1) && empty($sIdMsg1) && empty($sIdMsg2) && empty($birthdayMsg1) && empty($birthdayMsg2) && empty($birthdayMsg3) && empty($addressMsg1) && empty($numberMsg1) && empty($numberMsg2) && empty($numberMsg3) && empty($numberMsg4) && empty($numberMsg5) && empty($emailMsg7) && empty($emailMsg8) && empty($emailMsg9) && empty($projectMsg1) && empty($projectMsg2) && empty($projectMsg3) && empty($dateMsg01) && empty($dateMsg02) && empty($dateMsg03) && empty($timeMsg1) && empty($timeMsg2) && empty($genderMsg01) && empty($campusMsg01)){
-        try{
-            include "../db_connection.php";
-
-            // Check StudentId is already registerd
-            $checksId = $db->prepare("SELECT `StudentID` FROM `students` WHERE `StudentID`=?");
-            $checksId->execute(array($_POST['sId']));
-            $sIdCheck = $checksId->fetch(PDO::FETCH_ASSOC);
-            
-            // Check email is already registerd
-            $checkEmail = $db->prepare("SELECT `Email` FROM `students` WHERE `Email`=?");
-            $checkEmail->execute(array($_POST['email']));
-            $emailCheck = $checkEmail->fetch(PDO::FETCH_ASSOC);
-
-            if ($checksId->rowCount()>0 && $sIdCheck['StudentID'] != $_POST['sId']) $sIdMsg3 = "Your Student ID is already registered";
-            elseif ($checkEmail->rowCount()>0 && $emailCheck['Email'] != $_POST['email']) $emailMsg10 = "Your Email is already registered";
-            else{
-                // Update data in students table
-                $stmtStudents = $db->prepare("UPDATE `students` SET 
-                                `StudentID` = ?,
-                                `StudentName` = ?,
-                                `Address` = ?,
-                                `PhoneNumber` = ?,
-                                `WhatsappNumber` = ?,
-                                `Birthday` = ?,
-                                `Email` = ?,
-                                `ProjectsCompleted` = ?,
-                                `Gender` = ?,
-                                `CampusId` = ?
-                                        WHERE `StudentID` = ?");
-                                                $stmtStudents->execute(array(
-                                                    $_POST['sId'],
-                                                    $_POST['sName'],
-                                                    $_POST['address'],
-                                                    $_POST['pNumber'],
-                                                    $_POST['wNumber'],
-                                                    $_POST['birthday'],
-                                                    $_POST['email'],
-                                                    $_POST['cProjects'],
-                                                    $_POST['gender'],
-                                                    $_POST['cName'],
-                                                    $_GET['studentId']
-                                                ));
-                                   
-                    // Update Existing data records from time_table table's date to 0
-                    $stmtUpdate = $db->prepare("UPDATE `time_tables` SET `DateAndTime` = ?, `StudentID`=? WHERE `StudentID`=?");
-                    $stmtUpdate->execute(array('00', $_POST['sId'],$studentId));
-                    
-                    // Insert data into time_tables table
-                    $stmt_time_tables = $db->prepare("UPDATE `time_tables` SET `DateAndTime`=? WHERE `StudentID`=? AND `DateAndTime`=? LIMIT 1");
-                    
-                    // Insert date for date and time 01
-                    $stmt_time_tables->execute([$_POST['date01']. '' . $_POST['time01'], $_POST['sId'], '00']);
-                    
-                    // Reset the prepared statement
-                    // $stmt_time_tables->closeCursor();
-                    
-                    // Insert date for date and time 02
-                    $stmt_time_tables->execute([$_POST['date02']. '' . $_POST['time02'], $_POST['sId'], '00']);
-                    
-                    // Reset the prepared statement
-                    // $stmt_time_tables->closeCursor();
-                    
-                    // Insert date for date and time 03
-                    $stmt_time_tables->execute([$_POST['date03']. '' . $_POST['time03'], $_POST['sId'], '00']);
-
-                    if (($stmtStudents->rowCount() > 0) || ($stmt_time_tables->rowCount() > 0)){
-
-                        $updateSuccess = "Student details updated successfully";
-                        header("location:edit.php?studentId=".$_POST['sId']);
-                        exit();
-                    }
-                
-            }                                        
-        }catch(PDOException $e){
-            $dbErr1=$e->getMessage();
-        }
-
-    }
-
-    // Create div for toast animation and javascript
-    if($nameMsg1 != ""){
-        echo "<div id='nameMsg1'><div>";
-    }
-    if($sIdMsg1 != ""){
-        echo "<div id='sIdMsg1'><div>";
-    }
-    if($sIdMsg2 != ""){
-        echo "<div id='sIdMsg2'><div>";
-    }
-    if($sIdMsg3 != ""){
-        echo "<div id='sIdMsg3'><div>";
-    }
-    if($birthdayMsg1 != ""){
-        echo "<div id='birthdayMsg1'><div>";
-    }
-    if($birthdayMsg2 != ""){
-        echo "<div id='birthdayMsg2'><div>";
-    }
-    if($birthdayMsg3 != ""){
-        echo "<div id='birthdayMsg3'><div>";
-    }
-    if($addressMsg1 != ""){
-        echo "<div id='addressMsg1'><div>";
-    }
-    if($numberMsg1 != ""){
-        echo "<div id='numberMsg1'><div>";
-    }
-    if($numberMsg2 != ""){
-        echo "<div id='numberMsg2'><div>";
-    }
-    if($numberMsg3 != ""){
-        echo "<div id='numberMsg3'><div>";
-    }
-    if($numberMsg4 != ""){
-        echo "<div id='numberMsg4'><div>";
-    }
-    if($numberMsg5 != ""){
-        echo "<div id='numberMsg5'><div>";
-    }
-    if($emailMsg7 != ""){
-        echo "<div id='emailMsg7'><div>";
-    }
-    if($emailMsg8 != ""){
-        echo "<div id='emailMsg8'><div>";
-    }
-    if($emailMsg9 != ""){
-        echo "<div id='emailMsg9'><div>";
-    }
-    if($emailMsg10 != ""){
-        echo "<div id='emailMsg10'><div>";
-    }
-    if($projectMsg1 != ""){
-        echo "<div id='projectMsg1'><div>";
-    }
-    if($projectMsg2 != ""){
-        echo "<div id='projectMsg2'><div>";
-    }
-    if($projectMsg3 != ""){
-        echo "<div id='projectMsg3'><div>";
-    }
-    if($dateMsg01 != ""){
-        echo "<div id='dateMsg01'><div>";
-    }
-    if($dateMsg02 != ""){
-        echo "<div id='dateMsg02'><div>";
-    }
-    if($dateMsg03 != ""){
-        echo "<div id='dateMsg03'><div>";
-    }
-    if($timeMsg1 != ""){
-        echo "<div id='timeMsg1'><div>";
-    }
-    if($timeMsg2 != ""){
-        echo "<div id='timeMsg2'><div>";
-    }
-    if($genderMsg01 != ""){
-        echo "<div id='genderMsg01'><div>";
-    }
-    if($campusMsg01 != ""){
-        echo "<div id='campusMsg01'><div>";
-    }
-    if($updateSuccess != ""){
-        echo "<div id='updateSuccess'><div>";
-    }
-    if($dbErr1 != ""){
-        echo "<div id='dbErr1'><div>";
-    }
-
-
-    // Check $_POST values
-    // echo "<pre>";
-    // var_dump($_POST);
-    // echo "</pre>";
-}
-?>
-
 
 <?php
 

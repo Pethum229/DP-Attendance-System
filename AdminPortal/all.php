@@ -6,6 +6,12 @@
         header("location:../login.php");
         exit();
     }
+    if(!empty($_SESSION['delete'])){
+        echo "<div id='deleteRec'><div>";
+
+        usleep(5000000);
+        unset($_SESSION['delete']);
+    }
     
  ?>
 <title>Registered Students | Admin Portal</title>
@@ -148,18 +154,18 @@
                     function displayRecords($row){
                         $studentId = $row['StudentID'];
                         echo "<tr>";
-                        echo "<td>" . $row['Id'] . "</td>";
-                        echo "<td class='userId'>" . $row['StudentID'] . "</td>";
-                        echo "<td>" . $row['StudentName'] . "</td>";
-                        echo "<td>" . $row['PhoneNumber'] . "</td>";
-                        echo "<td>" . $row['ProjectsCompleted'] . "</td>";
-                        echo "<td>";
-                        echo "<div class='action'>";
-                        echo "<a href='view.php?studentId=$studentId' class='viewData'><ion-icon name='eye-outline'></ion-icon></a>";
-                        echo "<a href='edit.php?studentId=$studentId'><ion-icon style='color:green' name='create-outline'></ion-icon></a>";
-                        echo "<a href='#'><ion-icon style='color:red' name='trash-outline'></ion-icon></a>";
-                        echo "</div>";
-                        echo "</td>";
+                            echo "<td>" . $row['Id'] . "</td>";
+                            echo "<td class='userId'>" . $row['StudentID'] . "</td>";
+                            echo "<td>" . $row['StudentName'] . "</td>";
+                            echo "<td>" . $row['PhoneNumber'] . "</td>";
+                            echo "<td>" . $row['ProjectsCompleted'] . "</td>";
+                            echo "<td>";
+                                echo "<div class='action'>";
+                                    echo "<a href='view.php?studentId=$studentId' class='viewData'><ion-icon name='eye-outline'></ion-icon></a>";
+                                    echo "<a href='edit.php?studentId=$studentId'><ion-icon style='color:green' name='create-outline'></ion-icon></a>";
+                                    echo "<a href='delete.php?studentId=$studentId'><ion-icon style='color:red' name='trash-outline'></ion-icon></a>";
+                                echo "</div>";
+                            echo "</td>";
                         echo "</tr>";
                     }
 
@@ -316,6 +322,8 @@
         </div>
     </section>
 
+    <div class="notifications"></div>
+
 
     </div>
 </div>
@@ -359,6 +367,8 @@
             toggleIcon('pCompleted');
         });
     </script>
+
+    <script src="../app.js"></script>
 
 </body>
 </html>
