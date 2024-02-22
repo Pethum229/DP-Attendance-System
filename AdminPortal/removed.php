@@ -7,6 +7,13 @@
         exit();
     }
 
+    if(!empty($_SESSION['reenroll'])){
+        echo "<div id='reenroll'><div>";
+
+        usleep(5000000);
+        unset($_SESSION['reenroll']);
+    }
+
 ?>
     <title>Not Attended Students</title>
     <style>
@@ -130,6 +137,99 @@
             border-radius:10px;
             display:flex;
         }
+
+        /* Toast Notifications */
+
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+        .notifications{
+         font-family: 'Poppins', sans-serif;
+         position: fixed;
+         top: 30px;
+         right: 20px;
+        }
+        .toast{
+            position: relative;
+            padding: 10px;
+            color: #fff;
+            margin-bottom: 10px;
+            width: 400px;
+            display: grid;
+            grid-template-columns: 70px 1fr 70px;
+            border-radius: 5px;
+            --color: #0abf30;
+            background-image: 
+                linear-gradient(
+                    to right, #0abf3055, #22242f 30%
+                ); 
+            animation: show 0.3s ease 1 forwards  
+        }
+        .toast i{
+            color: var(--color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: x-large;
+        }
+        .toast .title{
+            font-size: x-large;
+            font-weight: bold;
+        }
+        .toast span, .toast i:nth-child(3){
+            color: #fff;
+            opacity: 0.6;
+        }
+        @keyframes show{
+            0%{
+                transform: translateX(100%);
+            }
+            40%{
+                transform: translateX(-5%);
+            }
+            80%{
+                transform: translateX(0%);
+            }
+            100%{
+                transform: translateX(-10%);
+            }
+        }
+        .toast::before{
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            background-color: var(--color);
+            width: 100%;
+            height: 3px;
+            content: '';
+            box-shadow: 0 0 10px var(--color);
+            animation: timeOut 5s linear 1 forwards
+        }
+        @keyframes timeOut{
+            to{
+                width: 0;
+            }
+        }
+        .toast.error{
+            --color: #f24d4c;
+            background-image: 
+                linear-gradient(
+                    to right, #f24d4c55, #22242F 30%
+                );
+        }
+        .toast.warning{
+            --color: #e9bd0c;
+            background-image: 
+                linear-gradient(
+                    to right, #e9bd0c55, #22242F 30%
+                );
+        }
+        .toast.info{
+            --color: #3498db;
+            background-image: 
+                linear-gradient(
+                    to right, #3498db55, #22242F 30%
+                );
+        }
     </style>
 </head>
 <body>
@@ -159,6 +259,7 @@
                 include "../db_connection.php";      
                 // Function for displaying records
                 function displayRecords($row){
+                    $studentId = $row['StudentID'];
                     echo "<tr>";
                         echo "<td>" . $row['Id'] . "</td>";
                         echo "<td>" . $row['StudentID'] . "</td>";
@@ -167,8 +268,8 @@
                         echo "<td>" . $row['ProjectsCompleted'] . "</td>";
                         echo "<td>";
                             echo "<div class='action'>";
-                                echo "<a href=''><ion-icon name='eye-outline'></ion-icon></a>";
-                                echo "<a class='btnEnroll' href='#'>Re-Enroll</a>";
+                                echo "<a href='view.php?studentId=$studentId'><ion-icon name='eye-outline'></ion-icon></a>";
+                                echo "<a href='reenroll.php?studentId=$studentId' class='btnEnroll' >Re-Enroll</a>";
                             echo "</div>";
                         echo "</td>";
                     echo "</tr>";
@@ -311,6 +412,7 @@
                 <!-- Structre of Removed Student Table <-End-> -->
         </div>
     </section>
+    <div class="notifications"></div>
     </div>
 </div>
 
@@ -351,6 +453,7 @@
             toggleIcon('pCompleted');
         });
     </script>
+    <script src="../app.js"></script>
 </body>
 </html>
 </body>

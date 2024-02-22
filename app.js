@@ -63,6 +63,7 @@
     let updateSuccess = document.getElementById('updateSuccess');
     let urlError = document.getElementById('urlError');
     let deleteRec = document.getElementById('deleteRec');
+    let reenroll = document.getElementById('reenroll');
 
     
     function createToast(type, icon, title, text){
@@ -529,11 +530,17 @@
         createToast(type, icon, title, text);
     }
     if(deleteRec){
-        console.log("Removed");
         let type = 'success';
         let icon = 'fa-solid fa-circle-check';
         let title = 'Success!';
         let text = 'Student removed successfully';
+        createToast(type, icon, title, text);
+    }
+    if(reenroll){
+        let type = 'success';
+        let icon = 'fa-solid fa-circle-check';
+        let title = 'Success!';
+        let text = 'Student re-enrolled successfully';
         createToast(type, icon, title, text);
     }
     if(urlError){
@@ -543,6 +550,7 @@
         let text = 'Please input valid URL or Contact Admin';
         createToast(type, icon, title, text);
     }
+
     forgotPwd.addEventListener("click",function(){
         let type = 'info';
         let icon = 'fa-solid fa-circle-check';

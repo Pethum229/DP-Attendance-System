@@ -1,6 +1,6 @@
 <?php
     session_start();
-
+    
     $redirectURL = "";
 
 if(!isset($_SESSION['name'])){
@@ -16,11 +16,11 @@ if(!isset($_SESSION['name'])){
     try{
 
         $updateActivness = $db->prepare("UPDATE `students` SET `IsActive`=? WHERE `StudentID`=?");
-        $updateActivness->execute(array('0',$studentId));
+        $updateActivness->execute(array('1',$studentId));
 
         if($updateActivness->rowCount()>0){
-            $_SESSION['delete'] = "Record Deleted Successfully";
-            $redirectURL = 'all.php';
+            $_SESSION['reenroll'] = "Student Re-enrolled Successfully";
+            $redirectURL = 'removed.php';
             header("location:$redirectURL");
             exit();
         }
