@@ -1,5 +1,5 @@
 <?php
-
+echo "Done";
 session_start();
 
 if(!isset($_SESSION['name'])){

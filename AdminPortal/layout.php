@@ -6,43 +6,8 @@ include "../inc_header.php";
 // var_dump($_SESSION['button_clicked_date']);
 // var_dump($_SESSION['button_disabled']);
 
-// if(!isset($_SESSION['name'])){
-//     header("location:../login.php");
-//     exit();
-// }
-
-// Check if the button was clicked today
-$buttonClickedToday = isset($_SESSION['button_clicked_date']) && $_SESSION['button_clicked_date'] === date('Y-m-d');
-
-// Check if the button should be disabled
-$buttonDisabled = isset($_SESSION['button_disabled']) && $_SESSION['button_disabled'];
-
-// Debugging: Output the current date to see if it matches with the stored date
-// echo "Current Date: " . date('Y-m-d');
-
-// Debugging: Output the button state variables
-// echo "Button Clicked Today: " . ($buttonClickedToday ? 'Yes' : 'No');
-// echo "Button Disabled: " . ($buttonDisabled ? 'Yes' : 'No');
-
-// Check if the button should be clickable
-$buttonClickable = !$buttonClickedToday || ($buttonClickedToday && !$buttonDisabled);
-
-// Reset button state if a new day has started
-if (!$buttonClickedToday) {
-    $_SESSION['button_disabled'] = false;
-}
-
-// Handle button click
-if (isset($_POST['click_button'])) {
-    // Perform actions when the button is clicked
-    // For example, update database, perform some operation, etc.
-    
-    // Set button clicked date
-    $_SESSION['button_clicked_date'] = date('Y-m-d');
-    // Disable the button until the next day
-    $_SESSION['button_disabled'] = true;
-    // Redirect to prevent multiple form submissions
-    header('Location: ' . $_SERVER['PHP_SELF']);
+if(!isset($_SESSION['name'])){
+    header("location:../login.php");
     exit();
 }
 
@@ -132,7 +97,7 @@ if (isset($_POST['click_button'])) {
                     <li>
                         <form method="POST">
                             <button class="btn-top" id="clickableButton">
-                                <a <?php if (!$buttonClickable) echo 'style="pointer-events: none; cursor: default;"'; ?> href="<?php echo ($buttonClickable) ? 'timetable.php' : 'javascript:void(0)'; ?>">
+                                <a href="timetable.php">
                                     <span class="icon"><ion-icon name="hourglass-outline"></ion-icon></span>
                                     <span class="title">Make Time Table</span>
                                 </a>
