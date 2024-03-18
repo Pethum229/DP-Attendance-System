@@ -1,6 +1,8 @@
 <?php include "inc_header.php"; ?>
     <title>Time Table</title>
     <style>
+
+        /* Time Table Style <- Start -> */
         .row{
             display:flex;
             flex-wrap:wrap;
@@ -54,13 +56,14 @@
         tr:nth-child(odd) {
           background-color: rgba(13, 17, 23, 0.4);
         }
+        /* Time Table Style <- End -> */
         </style>
 </head>
 <body>
     <section>
         <h1 class="main">Hathagala DP IT Campus Time Table</h1>
         <div class="row">
-            <!-- Structre of  Time Table <-Start-> -->
+            <!-- Structure of Time Table <-Start-> -->
 
             <?php
 

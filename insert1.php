@@ -4,7 +4,7 @@
 
     // Insert Attendance Student Data to Database <---Start--->
 
-    // Set your desired timezone
+    // Set timezone
     date_default_timezone_set('Asia/Kolkata');
 
     if(isset($_POST['text'])){
@@ -12,11 +12,14 @@
         $date = date('Y-m-d');
         $time = date('H:i:s');
 
+        // Store QR Code to SESSION Variable
         $_SESSION['QR'] = $text;
 
+        // Check Scanned student is TimeIn?
         $sql = $db->prepare("SELECT * FROM `daily_users` WHERE `StudentID`=? AND `LOGDATE`=? AND `Status`=?");
         $sql->execute(array($text,$date,'0'));
         if($sql->rowCount()>0){
+            // Update TimeOut Details of scanned sutudent
             $sql = $db->prepare("UPDATE `daily_users` SET `TimeOut`=?, `Status`=? WHERE `StudentID`=? AND `LogDate`=? AND `Status`=?");
             $sql-> execute(array($time,'1',$text,$date,'0'));
             $_SESSION['timeOut'] = 'Successfully Time Out';

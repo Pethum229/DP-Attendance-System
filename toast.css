@@ -1,4 +1,4 @@
- /* Check Start */
+ /* Toast animation styles <-Start-> */
 
  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
  body{
@@ -100,3 +100,5 @@
              to right, #3498db55, #22242F 30%
          );
  }
+
+  /* Toast animation styles <-End-> */

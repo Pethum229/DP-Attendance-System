@@ -1,6 +1,110 @@
 <?php include "inc_header.php"; ?>
     <title>DP Attendance System</title>
     <style>
+        /* Toast Animation Style <-Start-> */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+        
+        body{
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #0d1117;
+        }
+        button{
+            padding: 10px;
+        }
+        .notifications{
+            position: fixed;
+            top: 30px;
+            right: 20px;
+        }
+        .toast{
+            position: relative;
+            padding: 10px;
+            color: #fff;
+            margin-bottom: 10px;
+            width: 400px;
+            display: grid;
+            grid-template-columns: 70px 1fr 70px;
+            border-radius: 5px;
+            --color: #0abf30;
+            background-image: 
+                linear-gradient(
+                    to right, #0abf3055, #22242f 30%
+                ); 
+            animation: show 0.3s ease 1 forwards  
+        }
+        .toast i{
+            color: var(--color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: x-large;
+        }
+        .toast .title{
+            font-size: x-large;
+            font-weight: bold;
+        }
+        .toast span, .toast i:nth-child(3){
+            color: #fff;
+            opacity: 0.6;
+        }
+        @keyframes show{
+            0%{
+                transform: translateX(100%);
+            }
+            40%{
+                transform: translateX(-5%);
+            }
+            80%{
+                transform: translateX(0%);
+            }
+            100%{
+                transform: translateX(-10%);
+            }
+        }
+        .toast::before{
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            background-color: var(--color);
+            width: 100%;
+            height: 3px;
+            content: '';
+            box-shadow: 0 0 10px var(--color);
+            animation: timeOut 5s linear 1 forwards
+        }
+        @keyframes timeOut{
+            to{
+                width: 0;
+            }
+        }
+        .toast.error{
+            --color: #f24d4c;
+            background-image: 
+                linear-gradient(
+                    to right, #f24d4c55, #22242F 30%
+                );
+        }
+        .toast.warning{
+            --color: #e9bd0c;
+            background-image: 
+                linear-gradient(
+                    to right, #e9bd0c55, #22242F 30%
+                );
+        }
+        .toast.info{
+            --color: #3498db;
+            background-image: 
+                linear-gradient(
+                    to right, #3498db55, #22242F 30%
+                );
+        }
+        /* Toast Animation Style <-End-> */
+
         .blur {
             filter: blur(5px); /* Adjust the blur intensity as needed */
             overflow: hidden; /* Prevent scrolling when blurred */
@@ -260,110 +364,6 @@
             }
         }
 
-        /* Check Start */
-
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
-        body{
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #0d1117;
-        }
-        button{
-            padding: 10px;
-        }
-        .notifications{
-            position: fixed;
-            top: 30px;
-            right: 20px;
-        }
-        .toast{
-            position: relative;
-            padding: 10px;
-            color: #fff;
-            margin-bottom: 10px;
-            width: 400px;
-            display: grid;
-            grid-template-columns: 70px 1fr 70px;
-            border-radius: 5px;
-            --color: #0abf30;
-            background-image: 
-                linear-gradient(
-                    to right, #0abf3055, #22242f 30%
-                ); 
-            animation: show 0.3s ease 1 forwards  
-        }
-        .toast i{
-            color: var(--color);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: x-large;
-        }
-        .toast .title{
-            font-size: x-large;
-            font-weight: bold;
-        }
-        .toast span, .toast i:nth-child(3){
-            color: #fff;
-            opacity: 0.6;
-        }
-        @keyframes show{
-            0%{
-                transform: translateX(100%);
-            }
-            40%{
-                transform: translateX(-5%);
-            }
-            80%{
-                transform: translateX(0%);
-            }
-            100%{
-                transform: translateX(-10%);
-            }
-        }
-        .toast::before{
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            background-color: var(--color);
-            width: 100%;
-            height: 3px;
-            content: '';
-            box-shadow: 0 0 10px var(--color);
-            animation: timeOut 5s linear 1 forwards
-        }
-        @keyframes timeOut{
-            to{
-                width: 0;
-            }
-        }
-        .toast.error{
-            --color: #f24d4c;
-            background-image: 
-                linear-gradient(
-                    to right, #f24d4c55, #22242F 30%
-                );
-        }
-        .toast.warning{
-            --color: #e9bd0c;
-            background-image: 
-                linear-gradient(
-                    to right, #e9bd0c55, #22242F 30%
-                );
-        }
-        .toast.info{
-            --color: #3498db;
-            background-image: 
-                linear-gradient(
-                    to right, #3498db55, #22242F 30%
-                );
-        }
-
-        /* Check End */
     </style>
 </head>
 <body>
@@ -377,6 +377,7 @@
         isset($_SESSION['warning']) ||
         isset($_SESSION['qrNotSet'])
     ) {
+
         // Set a timeout in JavaScript to trigger an AJAX request after 5 seconds
         echo "<script>
                 setTimeout(function() {
@@ -385,12 +386,14 @@
                     xhttp.send();
                 }, 5000);
               </script>";
-    }
+
+        }
     ?>
     <!-- Unset already setted sessions <-End->-->
 
     <?php
 
+    // Check scanned student is timeout student?
     if(isset($_POST['submit'])){
 
         $studentID = $_SESSION['QR'];
@@ -446,6 +449,7 @@
                     <input type="text" name="text" id="text" readonly="" placeholder="Scan QR Code" class="form-control" style="display:none">
                 </form>
                 
+                <!-- Fetch last scanned student detials -->
                 <?php
                 include_once "db_connection.php";
                 if(isset($_SESSION['QR'])){
@@ -498,6 +502,8 @@
                         <div id='timeIn'></div>
                     ";
                 }
+
+                // Display popup when timout the student
                 if(isset($_SESSION['timeOut'])){
                     if(!isset($_POST['submit'])){
                         echo"
@@ -540,6 +546,7 @@
         </div>
     </section>
 
+    <!-- div for visible toast notification -->
     <div class="notifications"></div>
 
     <!-- Structure of Camera Preview and Input Boxes <-End-> -->
