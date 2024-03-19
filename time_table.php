@@ -70,6 +70,7 @@
                 $currentDate = date('Y-m-d');
                 $currentDayName = date('l');
 
+                // Set day variable
                 switch($currentDayName){
                     case "Sunday":
                         $day = "1";

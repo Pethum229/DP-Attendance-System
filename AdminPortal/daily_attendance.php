@@ -155,7 +155,7 @@
                         $date = date('Y-m-d');
                             
                         // Function for displaying records
-                        function displayRecords($row){
+                        function displayRecords($row,$time_difference_readable){
                             echo "<tr>";
                             echo "<td>" . $row['StudentID'] . "</td>";
                             echo "<td>" . $row['StudentName'] . "</td>";
@@ -163,6 +163,7 @@
                             echo "<td>" . $row['TimeIn'] . "</td>";
                             echo "<td>" . $row['TimeOut'] . "</td>";
                             echo "<td>" . $row['LogDate'] . "</td>";
+                            echo "<td>" . $time_difference_readable . "</td>";
                             echo "</tr>";
                         }
                         
@@ -232,12 +233,34 @@
                             echo "<td>Time In<ion-icon id='timeIn' name='arrow-up-outline'></ion-icon></td>";
                             echo "<td>Time Out<ion-icon id='timeOut' name='arrow-up-outline'></ion-icon></td>";
                             echo "<td>Log Date</td>";
+                            echo "<td>Time Duration</td>";
                             echo "</tr>";
                             echo "</thead>";
                             echo "<tbody>";
                         
                             foreach ($lData as $row){
-                                displayRecords($row);
+
+                                // Get difference of 2 time periods
+                                if (isset($row['TimeIn']) && isset($row['TimeOut']) && !empty($row['TimeIn']) && !empty($row['TimeOut'])) {
+                                
+                                    list($in_hours, $in_minutes, $in_seconds) = explode(':', $row['TimeIn']);
+                                    list($out_hours, $out_minutes, $out_seconds) = explode(':', $row['TimeOut']);
+                                
+                                    $time_in_seconds = $in_hours * 3600 + $in_minutes * 60 + $in_seconds;
+                                    $time_out_seconds = $out_hours * 3600 + $out_minutes * 60 + $out_seconds;
+                                
+                                    $time_difference_seconds = $time_out_seconds - $time_in_seconds;
+                                
+                                    $time_difference_hours = floor($time_difference_seconds / 3600);
+                                    $time_difference_minutes = floor(($time_difference_seconds % 3600) / 60);
+                                    $time_difference_seconds_remaining = $time_difference_seconds % 60;
+                                
+                                    $time_difference_readable = sprintf('%02d:%02d:%02d', $time_difference_hours, $time_difference_minutes, $time_difference_seconds_remaining);
+                                } else {
+                                    $time_difference_readable = "N/A";
+                                }
+
+                                displayRecords($row,$time_difference_readable);
                             }
                         
                             echo "</tbody>";
@@ -263,13 +286,33 @@
                             echo "<td>Time In<ion-icon id='timeIn' name='arrow-up-outline'></ion-icon></td>";
                             echo "<td>Time Out<ion-icon id='timeOut' name='arrow-up-outline'></ion-icon></td>";
                             echo "<td>Log Date</td>";
+                            echo "<td>Time Duration</td>";
                             echo "</tr>";
                             echo "</thead>";
                             echo "<tbody>";
                         
                             foreach ($data as $row) {
-                                displayRecords($row);
-                                // print_r($data);
+
+                                // Get difference of 2 time periods
+                                if (isset($row['TimeIn']) && isset($row['TimeOut']) && !empty($row['TimeIn']) && !empty($row['TimeOut'])) {
+
+                                    list($in_hours, $in_minutes, $in_seconds) = explode(':', $row['TimeIn']);
+                                    list($out_hours, $out_minutes, $out_seconds) = explode(':', $row['TimeOut']);
+                                
+                                    $time_in_seconds = $in_hours * 3600 + $in_minutes * 60 + $in_seconds;
+                                    $time_out_seconds = $out_hours * 3600 + $out_minutes * 60 + $out_seconds;
+                                
+                                    $time_difference_seconds = $time_out_seconds - $time_in_seconds;
+                                
+                                    $time_difference_hours = floor($time_difference_seconds / 3600);
+                                    $time_difference_minutes = floor(($time_difference_seconds % 3600) / 60);
+                                    $time_difference_seconds_remaining = $time_difference_seconds % 60;
+                                
+                                    $time_difference_readable = sprintf('%02d:%02d:%02d', $time_difference_hours, $time_difference_minutes, $time_difference_seconds_remaining);
+                                } else {
+                                    $time_difference_readable = "N/A";
+                                }
+                                displayRecords($row,$time_difference_readable);
                             }
                         
                             echo "</tbody>";

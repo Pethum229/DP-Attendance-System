@@ -396,10 +396,10 @@
                     <table>
                         <thead>
                             <tr>
-                                <td>Student ID</td>
                                 <td>Student Name</td>
                                 <td>ClockIn Time</td>
                                 <td>ClockOut Time</td>
+                                <td>Time Duration</td>
                             </tr>
                         </thead>
                         <tbody>
@@ -410,14 +410,36 @@
                         $lastStudents = $db->prepare("SELECT du.`StudentID`, du.`TimeIn`, du.`TimeOut`, s.`StudentName` FROM `daily_users` du JOIN `students` s ON du.`StudentID` = s.`StudentID` ORDER BY du.`ID` DESC LIMIT 7");
                         $lastStudents->execute(array());
                         while ($row = $lastStudents -> fetch (PDO::FETCH_ASSOC)){  
+                        
+                        // Get difference of 2 time periods
+
+                        if (isset($row['TimeIn']) && isset($row['TimeOut']) && !empty($row['TimeIn']) && !empty($row['TimeOut'])) {
+
+                            list($in_hours, $in_minutes, $in_seconds) = explode(':', $row['TimeIn']);
+                            list($out_hours, $out_minutes, $out_seconds) = explode(':', $row['TimeOut']);
+                        
+                            $time_in_seconds = $in_hours * 3600 + $in_minutes * 60 + $in_seconds;
+                            $time_out_seconds = $out_hours * 3600 + $out_minutes * 60 + $out_seconds;
+                        
+                            $time_difference_seconds = $time_out_seconds - $time_in_seconds;
+                        
+                            $time_difference_hours = floor($time_difference_seconds / 3600);
+                            $time_difference_minutes = floor(($time_difference_seconds % 3600) / 60);
+                            $time_difference_seconds_remaining = $time_difference_seconds % 60;
+                        
+                            $time_difference_readable = sprintf('%02d:%02d:%02d', $time_difference_hours, $time_difference_minutes, $time_difference_seconds_remaining);
+                        } else {
+                            $time_difference_readable = "N/A";
+                        }
+
 
                         ?>
 
                             <tr>
-                                <td><?php echo $row['StudentID'] ?></td>
                                 <td><?php echo $row['StudentName'] ?></td>
                                 <td><?php echo $row['TimeIn'] ?></td>
                                 <td><?php echo $row['TimeOut'] ?></td>
+                                <td><?php echo $time_difference_readable ?></td>
                             </tr>
 
                         <?php
@@ -427,7 +449,7 @@
                     </table>
                 </div>
 
-                <!-- New Students -->
+                <!-- High Performance Students -->
                 <div class="highPerformance">
                     <div class="cardHeader">
                         <h2>Top Performers</h2>
