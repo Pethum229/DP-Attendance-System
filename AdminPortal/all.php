@@ -243,13 +243,14 @@
                     include "../db_connection.php";
 
                     // Function for displaying records
-                    function displayRecords($row){
+                    function displayRecords($row,$age){
                         $studentId = $row['StudentID'];
                         echo "<tr>";
                             echo "<td>" . $row['Id'] . "</td>";
                             echo "<td class='userId'>" . $row['StudentID'] . "</td>";
                             echo "<td>" . $row['StudentName'] . "</td>";
                             echo "<td>" . $row['PhoneNumber'] . "</td>";
+                            echo "<td>" . $age . "</td>";
                             echo "<td>" . $row['ProjectsCompleted'] . "</td>";
                             echo "<td>";
                                 echo "<div class='action'>";
@@ -322,6 +323,7 @@
                         echo "<td>Student ID<ion-icon id='sId' name='arrow-up-outline'></ion-icon></td>";
                         echo "<td>Student Name<ion-icon id='sName' name='arrow-up-outline'></ion-icon></td>";
                         echo "<td>Phone Number</td>";
+                        echo "<td>Age<ion-icon id='age' name='arrow-up-outline'></ion-icon></td>";
                         echo "<td>Projects Completed<ion-icon id='pCompleted' name='arrow-up-outline'></ion-icon></td>";
                         echo "<td>Actions</td>";
                         echo "</tr>";
@@ -329,7 +331,13 @@
                         echo "<tbody>";
 
                         foreach ($lData as $row){
-                            displayRecords($row);
+                            // Calculate Age
+                            $today = new DateTime(); // Current date
+                            $birthday = new DateTime($row['Birthday']);
+
+                            $age = $today->diff($birthday)->y; // Extracting years from the DateInterval object
+
+                            displayRecords($row, $age);
                         }
 
                         echo "</tbody>";
@@ -349,6 +357,7 @@
                         echo "<td>Student ID<ion-icon id='sId' name='arrow-up-outline'></ion-icon></td>";
                         echo "<td>Student Name<ion-icon id='sName' name='arrow-up-outline'></ion-icon></td>";
                         echo "<td>Phone Number</td>";
+                        echo "<td>Age<ion-icon id='age' name='arrow-up-outline'></ion-icon></td>";
                         echo "<td>Projects Completed<ion-icon id='pCompleted' name='arrow-up-outline'></ion-icon></td>";
                         echo "<td>Actions</td>";
                         echo "</tr>";
@@ -356,7 +365,13 @@
                         echo "<tbody>";
 
                         foreach ($data as $row) {
-                            displayRecords($row);
+                            // Calculate Age
+                            $today = new DateTime(); // Current date
+                            $birthday = new DateTime($row['Birthday']);
+                                                
+                            $age = $today->diff($birthday)->y; // Extracting years from the DateInterval object
+                                                
+                            displayRecords($row, $age);
                         }
 
                         echo "</tbody>";
@@ -453,6 +468,10 @@
 
         document.getElementById('sName').addEventListener('click', function() {
             toggleIcon('sName');
+        });
+
+        document.getElementById('age').addEventListener('click', function() {
+            toggleIcon('age');
         });
 
         document.getElementById('pCompleted').addEventListener('click', function() {
