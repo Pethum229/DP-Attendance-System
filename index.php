@@ -11,7 +11,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #0d1117;
+            background-color: #ffffff;
         }
         button{
             padding: 10px;
@@ -124,7 +124,7 @@
             margin-bottom:20px;
         }
         .timeContent{
-            border:3px solid var(--border);
+            /* border:3px solid var(--border); */
             border-radius:5px;
             padding:10px 0;
             width:800px;
@@ -145,27 +145,27 @@
         .heading{
             font:var(--roboto);
             font-size:40px;
-            color:var(--accent);
+            color:#b7013a;
             font-weight:bold;
             text-align:center;
             text-transform:uppercase;
             margin:20px 0;
         }
         .timeContent>h2{
-            color:var(--white);
+            color:#212529;
             font:var(--actor);
             font-size:35px;
             text-align:center;
         }
         .date{
-            color:var(--white);
+            color:#212529;
             font:var(--actor);
             text-align:center;
             font-size:25px;
         }
         #current-time{
             text-align:center;
-            color:var(--white);
+            color:#212529;
             font-family:var(--roboto);
             font-size:40px;
             margin-top:-20px;
@@ -257,7 +257,7 @@
             border: none;
             outline: none;
             color: #fff;
-            /* background: var(--border); */
+            background: var(--border);
             cursor: pointer;
             position: relative;
             z-index: 0;

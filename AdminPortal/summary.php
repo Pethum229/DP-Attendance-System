@@ -110,7 +110,7 @@ if(!isset($_SESSION['name'])){
                                 END AS ProjectRange,
                                 COUNT(*) AS StudentCount
                             FROM students
-                            GROUP BY ProjectRange");
+                            GROUP BY ProjectRange ORDER BY ProjectsCompleted ASC");
     $project->execute();
     $projectCompleted = $project->fetchAll(PDO::FETCH_ASSOC);
 
@@ -145,6 +145,22 @@ if(!isset($_SESSION['name'])){
     }
 
     // Gender Overview
+
+    $gender = $db->prepare("SELECT COUNT(*) AS MaleFemaleCount FROM `students` WHERE `Gender`=?");
+    $gender->execute(array('1'));
+    $maleCount = $gender->fetch(PDO::FETCH_ASSOC);
+    
+    $male = $maleCount['MaleFemaleCount'];
+    
+    $gender->execute(array('0'));
+    $femaleCount = $gender->fetch(PDO::FETCH_ASSOC);
+
+    $female = $femaleCount['MaleFemaleCount'];
+
+    $genderOverview = [$male,$female];
+
+
+    // Last 30days project completation Overview
 
     $gender = $db->prepare("SELECT COUNT(*) AS MaleFemaleCount FROM `students` WHERE `Gender`=?");
     $gender->execute(array('1'));
@@ -240,7 +256,7 @@ if(!isset($_SESSION['name'])){
 
     const projects = document.getElementById('projectsCompleted');
     new Chart(projects, {
-      type: 'polarArea',
+      type: 'bar',
       data: {
         labels: <?php echo json_encode($projectRange) ?>,
         datasets: [{

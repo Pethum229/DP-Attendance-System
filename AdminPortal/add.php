@@ -90,7 +90,7 @@ if (isset($_POST['submit'])){
     }
 
     // Completed Projects Validation
-    if(empty($_POST['cProjects'])) $projectMsg1 = "Completed project count is required";
+    if(empty($_POST['cProjects']) && $_POST['cProjects'] !=0) $projectMsg1 = "Completed project count is required";
     elseif(!is_numeric($_POST['cProjects'])) $projectMsg2 = "Project count must be a number";
     elseif($_POST['cProjects'] >= 321) $projectMsg3 = "Please enter valid project count";
 
@@ -566,7 +566,7 @@ if (isset($_POST['submit'])){
             </div>
             <div class="inputFlex">
                 <input style="width:68%" type="text" required name="email" placeholder="Email"  value = "<?php if(isset($_POST['submit']) && empty($registerSuccess)) echo $_POST['email']; ?>">
-                <input style="width:28%" type="text" required name="cProjects" placeholder="Completed Projects" value = "<?php if(isset($_POST['submit']) && empty($registerSuccess)) echo $_POST['cProjects']; ?>">
+                <input style="width:28%" type="text" name="cProjects" placeholder="Completed Projects" value = "<?php if(isset($_POST['submit']) && empty($registerSuccess)) echo $_POST['cProjects']; ?>">
             </div>
     
             <!-- Select Date and Time Fields -->
